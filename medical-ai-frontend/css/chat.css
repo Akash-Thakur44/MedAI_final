@@ -1503,6 +1503,17 @@
     }
 }
 
+.sound-wave.paused .wave-bar {
+    animation-play-state: paused;
+}
+
+.chat-voice-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
 
 /* ==================== MESSAGE META WITH SPEAK ==================== */
 .message-meta {

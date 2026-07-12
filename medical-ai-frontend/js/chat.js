@@ -606,10 +606,12 @@ function addMessageToUI(message, animate = true) {
     let speakBtnHTML = '';
     if (role === 'assistant' && content.length > 10) {
         speakBtnHTML = `
-            <button class="btn-speak" onclick="speakMessage(this, '${escapeForAttr(content)}')" title="Listen to this message">
-                <i class="fas fa-volume-up"></i>
-                <span>Listen</span>
-            </button>
+            <div class="chat-voice-controls" data-text="${escapeForAttr(content)}">
+                <button class="btn-speak" onclick="speakMessage(this, '${escapeForAttr(content)}')" title="Listen to this message">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Listen</span>
+                </button>
+            </div>
         `;
     }
 
@@ -632,7 +634,12 @@ function addMessageToUI(message, animate = true) {
     // Auto-read if enabled
     if (animate && role === 'assistant' && ChatState.autoReadEnabled && content.length > 10) {
         setTimeout(() => {
-            speakText(content);
+            const lastControls = messagesContainer.lastElementChild?.querySelector('.btn-speak');
+            if (lastControls) {
+                speakMessage(lastControls, escapeForAttr(content));
+            } else {
+                speakText(content);
+            }
         }, 500);
     }
 
@@ -1236,6 +1243,9 @@ function hideChatVoiceStatus() {
 
 async function speakText(text) {
     try {
+        ChatState.isSpeaking = true;
+        ChatState.isPaused = false;
+
         // Stop any currently playing audio
         if (ChatState.currentAudio) {
             ChatState.currentAudio.pause();
@@ -1265,16 +1275,17 @@ async function speakText(text) {
         const audio = new Audio(audioUrl);
         
         ChatState.currentAudio = audio;
-        ChatState.isSpeaking = true;
 
         audio.onended = function() {
             ChatState.isSpeaking = false;
+            ChatState.isPaused = false;
             ChatState.currentAudio = null;
             resetAllSpeakButtons();
         };
 
         audio.onerror = function() {
             ChatState.isSpeaking = false;
+            ChatState.isPaused = false;
             ChatState.currentAudio = null;
             resetAllSpeakButtons();
         };
@@ -1284,6 +1295,7 @@ async function speakText(text) {
     } catch (error) {
         console.error('Speech synthesis error:', error);
         ChatState.isSpeaking = false;
+        ChatState.isPaused = false;
         ChatState.currentAudio = null;
         resetAllSpeakButtons();
     }
@@ -1298,10 +1310,47 @@ function stopSpeaking() {
         ChatState.synthesis.cancel();
     }
     ChatState.isSpeaking = false;
+    ChatState.isPaused = false;
     ChatState.currentUtterance = null;
     resetAllSpeakButtons();
 }
 
+function togglePauseSpeak() {
+    if (!ChatState.currentAudio) return;
+
+    const pauseResumeBtns = document.querySelectorAll('.btn-speak-pause-resume');
+    const soundWaves = document.querySelectorAll('.sound-wave');
+
+    if (ChatState.isPaused) {
+        // Resume playing
+        ChatState.currentAudio.play();
+        ChatState.isPaused = false;
+        
+        pauseResumeBtns.forEach(btn => {
+            btn.innerHTML = `
+                <i class="fas fa-pause"></i>
+                <span>Pause</span>
+            `;
+        });
+        soundWaves.forEach(wave => {
+            wave.classList.remove('paused');
+        });
+    } else {
+        // Pause playing
+        ChatState.currentAudio.pause();
+        ChatState.isPaused = true;
+
+        pauseResumeBtns.forEach(btn => {
+            btn.innerHTML = `
+                <i class="fas fa-play"></i>
+                <span>Resume</span>
+            `;
+        });
+        soundWaves.forEach(wave => {
+            wave.classList.add('paused');
+        });
+    }
+}
 
 function speakMessage(buttonEl, encodedText) {
     if (!ChatState.synthesis) {
@@ -1311,49 +1360,55 @@ function speakMessage(buttonEl, encodedText) {
 
     const text = decodeFromAttr(encodedText);
 
-    if (ChatState.isSpeaking) {
+    // If already speaking or paused, stop it
+    if (ChatState.isSpeaking || ChatState.isPaused) {
         stopSpeaking();
-
-        if (buttonEl.classList.contains('speaking')) {
-            return;
-        }
     }
 
     resetAllSpeakButtons();
-    buttonEl.classList.add('speaking');
-    buttonEl.innerHTML = `
-        <i class="fas fa-stop"></i>
-        <span>Stop</span>
-        <div class="sound-wave">
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-        </div>
-    `;
+    
+    const wrapper = buttonEl.parentElement;
+    if (wrapper) {
+        wrapper.innerHTML = `
+            <button class="btn-speak speaking btn-speak-pause-resume" onclick="togglePauseSpeak()" title="Pause/Resume speaking">
+                <i class="fas fa-pause"></i>
+                <span>Pause</span>
+            </button>
+            <button class="btn-speak speaking btn-speak-stop" onclick="stopSpeaking()" title="Stop speaking">
+                <i class="fas fa-stop"></i>
+                <span>Stop</span>
+            </button>
+            <div class="sound-wave">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+        `;
+    }
+
+    ChatState.isSpeaking = true;
+    ChatState.isPaused = false;
 
     speakText(text);
 
     const checkInterval = setInterval(() => {
-        if (!ChatState.isSpeaking) {
+        if (!ChatState.isSpeaking && !ChatState.isPaused) {
             clearInterval(checkInterval);
-            buttonEl.classList.remove('speaking');
-            buttonEl.innerHTML = `
-                <i class="fas fa-volume-up"></i>
-                <span>Listen</span>
-            `;
+            resetAllSpeakButtons();
         }
     }, 500);
 }
 
-
 function resetAllSpeakButtons() {
-    document.querySelectorAll('.btn-speak').forEach(btn => {
-        btn.classList.remove('speaking');
-        btn.innerHTML = `
-            <i class="fas fa-volume-up"></i>
-            <span>Listen</span>
+    document.querySelectorAll('.chat-voice-controls').forEach(wrapper => {
+        const text = wrapper.getAttribute('data-text') || '';
+        wrapper.innerHTML = `
+            <button class="btn-speak" onclick="speakMessage(this, '${text}')" title="Listen to this message">
+                <i class="fas fa-volume-up"></i>
+                <span>Listen</span>
+            </button>
         `;
     });
 }
@@ -1451,3 +1506,4 @@ window.speakMessage = speakMessage;
 window.stopSpeaking = stopSpeaking;
 window.stopChatVoice = stopChatVoice;
 window.toggleChatVoice = toggleChatVoice;
+window.togglePauseSpeak = togglePauseSpeak;
