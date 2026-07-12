@@ -309,6 +309,16 @@ def login():
                 'message': 'Invalid email or password'
             }), 401
 
+        # Auto-migrate plain-text password to hash
+        stored_hash = user.get('password_hash', '')
+        if not (stored_hash.startswith('$2b$') or stored_hash.startswith('$2a$')):
+            try:
+                new_hash = AuthService.hash_password(password)
+                UserDB.update(user['id'], {'password_hash': new_hash})
+                print(f"[MIGRATION] Migrated plain password for user: {email}")
+            except Exception as migration_error:
+                print(f"[MIGRATION ERROR] {migration_error}")
+
         # Check if account is active
         if not user.get('is_active', True):
             return jsonify({
@@ -422,6 +432,16 @@ def admin_login():
                 'success': False,
                 'message': 'Invalid admin credentials'
             }), 401
+
+        # Auto-migrate plain-text password to hash
+        stored_hash = user.get('password_hash', '')
+        if not (stored_hash.startswith('$2b$') or stored_hash.startswith('$2a$')):
+            try:
+                new_hash = AuthService.hash_password(password)
+                UserDB.update(user['id'], {'password_hash': new_hash})
+                print(f"[MIGRATION] Migrated plain password for admin: {email}")
+            except Exception as migration_error:
+                print(f"[MIGRATION ERROR] {migration_error}")
 
         # Check admin role
         if user.get('role') != 'admin':

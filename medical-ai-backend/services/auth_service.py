@@ -98,6 +98,10 @@ class AuthService:
             return False
 
         try:
+            # Plain text fallback for manually seeded/inserted users
+            if not (hashed_password.startswith('$2b$') or hashed_password.startswith('$2a$')):
+                return plain_password == hashed_password
+
             # Convert to bytes
             plain_bytes = plain_password.encode('utf-8')
             hashed_bytes = hashed_password.encode('utf-8')
