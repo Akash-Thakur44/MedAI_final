@@ -142,6 +142,10 @@ def setup_cors(app):
     # Remove empty strings
     allowed_origins = [origin for origin in allowed_origins if origin]
 
+    # Allow all vercel.app domains dynamically via regex pattern matching
+    import re
+    allowed_origins.append(re.compile(r"^https://.*\.vercel\.app$"))
+
     CORS(
         app,
         origins=allowed_origins,
