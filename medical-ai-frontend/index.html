@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedAI - AI Powered Health Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>Med<span class="logo-highlight">AI</span></span>
+            </a>
+
+            <!-- Nav Links -->
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+            </ul>
+
+            <!-- Auth Buttons -->
+            <div class="nav-auth">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Sign Up</a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+        </div>
+    </nav>
+
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="container hero-content">
+
+            <div class="hero-text">
+                <span class="hero-badge">
+                    <i class="fas fa-robot"></i> AI-Powered Healthcare
+                </span>
+                <h1 class="hero-title">
+                    Your Personal
+                    <span class="gradient-text">AI Health</span>
+                    Assistant
+                </h1>
+                <p class="hero-description">
+                    Describe your symptoms through text or voice, upload medical images,
+                    and get instant AI-powered health analysis with doctor recommendations.
+                </p>
+                <div class="hero-buttons">
+                    <a href="register.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-stethoscope"></i> Get Started Free
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline btn-lg">
+                        <i class="fas fa-play-circle"></i> How It Works
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Users Trust Us</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Accuracy Rate</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Specialists</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="hero-image-wrapper">
+                    <div class="hero-card card-1">
+                        <i class="fas fa-shield-virus"></i>
+                        <span>Disease Detection</span>
+                    </div>
+                    <div class="hero-card card-2">
+                        <i class="fas fa-user-md"></i>
+                        <span>Doctor Matched</span>
+                    </div>
+                    <div class="hero-card card-3">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Analysis Complete</span>
+                    </div>
+                    <div class="hero-illustration">
+                        <i class="fas fa-laptop-medical"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Hero Wave -->
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,64 C480,150 960,-20 1440,64 L1440,120 L0,120 Z" fill="#f8fafc"/>
+            </svg>
+        </div>
+    </section>
+
+
+    <!-- ==================== FEATURES SECTION ==================== -->
+    <section class="features" id="features">
+        <div class="container">
+
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Everything You Need for Health Analysis</h2>
+                <p class="section-description">
+                    Our AI-powered platform provides comprehensive health analysis
+                    using cutting-edge technology.
+                </p>
+            </div>
+
+            <div class="features-grid">
+
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-blue">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="feature-title">Text Input</h3>
+                    <p class="feature-description">
+                        Type your symptoms in plain language. Our AI understands
+                        natural descriptions and medical terms.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-green">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3 class="feature-title">Voice Input</h3>
+                    <p class="feature-description">
+                        Speak your symptoms directly. Supports English and Bengali
+                        voice recognition.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-purple">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="feature-title">Image Analysis</h3>
+                    <p class="feature-description">
+                        Upload photos of skin conditions, eye problems, or throat
+                        infections for visual AI analysis.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-red">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">AI Diagnosis</h3>
+                    <p class="feature-description">
+                        Powered by Google Gemini AI to provide accurate probable
+                        disease detection.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-orange">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="feature-title">Severity Detection</h3>
+                    <p class="feature-description">
+                        Instantly know if your condition is Low, Medium, High,
+                        or Critical severity.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-teal">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3 class="feature-title">Doctor Matching</h3>
+                    <p class="feature-description">
+                        Get matched with the right specialist based on your
+                        condition and location.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==================== HOW IT WORKS ==================== -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+
+            <div class="section-header">
+                <span class="section-badge">Process</span>
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-description">
+                    Get your health analysis in just 3 simple steps
+                </p>
+            </div>
+
+            <div class="steps-grid">
+
+                <!-- Step 1 -->
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="step-title">Describe Symptoms</h3>
+                    <p class="step-description">
+                        Type, speak, or upload images of your symptoms.
+                        Be as detailed as possible for better results.
+                    </p>
+                </div>
+
+                <!-- Step Arrow -->
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="step-title">AI Analysis</h3>
+                    <p class="step-description">
+                        Our Gemini AI analyzes your symptoms, detects
+                        probable conditions and severity level.
+                    </p>
+                </div>
+
+                <!-- Step Arrow -->
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-notes-medical"></i>
+                    </div>
+                    <h3 class="step-title">Get Results</h3>
+                    <p class="step-description">
+                        Receive detailed diagnosis, precautions, and
+                        matched doctor recommendations.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section class="about" id="about">
+        <div class="container about-content">
+
+            <div class="about-text">
+                <span class="section-badge">About MedAI</span>
+                <h2 class="section-title">Trusted AI Healthcare Platform</h2>
+                <p class="about-description">
+                    MedAI uses advanced artificial intelligence to help you understand
+                    your health better. Our platform is designed to provide quick,
+                    accessible health insights while always recommending professional
+                    medical consultation.
+                </p>
+                <ul class="about-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Powered by Google Gemini AI</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Secure & Private Data Handling</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>24/7 Available Health Assistant</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>50+ Verified Specialist Doctors</span>
+                    </li>
+                </ul>
+                <a href="register.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket"></i> Start Free Analysis
+                </a>
+            </div>
+
+            <div class="about-image">
+                <div class="about-card">
+                    <div class="about-card-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <div class="about-card-text">
+                        <h4>Medical Grade AI</h4>
+                        <p>Trained on millions of medical records</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ==================== DISCLAIMER SECTION ==================== -->
+    <section class="disclaimer">
+        <div class="container">
+            <div class="disclaimer-box">
+                <div class="disclaimer-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="disclaimer-text">
+                    <h3>Important Medical Disclaimer</h3>
+                    <p>
+                        MedAI provides <strong>educational health information only</strong>.
+                        It is <strong>NOT a substitute</strong> for professional medical
+                        diagnosis, treatment, or advice. Always consult a qualified
+                        healthcare provider for medical concerns. In case of emergency,
+                        call <strong>999</strong> immediately.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <!-- Footer Brand -->
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Med<span class="logo-highlight">AI</span></span>
+                    </a>
+                    <p class="footer-description">
+                        AI-powered health assistant helping you understand
+                        your symptoms and connect with the right doctors.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="symptom-checker.html">Symptom Checker</a></li>
+                        <li><a href="#">Image Analysis</a></li>
+                        <li><a href="#">Find Doctors</a></li>
+                        <li><a href="#">Health History</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:support@medai.com">support@medai.com</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+8801700000000">+880-1700-000000</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Dhaka, Bangladesh</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-ambulance"></i>
+                            <a href="tel:999" class="emergency-link">Emergency: 999</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; 2024 MedAI. All rights reserved.</p>
+                <p>
+                    <a href="#">Privacy Policy</a> |
+                    <a href="#">Terms of Service</a>
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>

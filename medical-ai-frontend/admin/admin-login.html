@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - MedAI Health Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/auth.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body class="admin-login-body">
+    <!-- ==================== ADMIN LOGIN CONTAINER ==================== -->
+    <div class="admin-login-container">
+      <!-- Admin Login Card -->
+      <div class="admin-login-card">
+        <!-- Login Header -->
+        <div class="admin-login-header">
+          <!-- Logo -->
+          <a href="../index.html" class="admin-login-logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>Med<span class="logo-highlight">AI</span></span>
+          </a>
+
+          <!-- Admin Badge -->
+          <div class="admin-login-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Admin Portal</span>
+          </div>
+
+          <h2>Admin Sign In</h2>
+          <p>Enter your admin credentials to access the control panel</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="adminLoginForm" class="auth-form">
+          <!-- Email -->
+          <div class="form-group">
+            <label for="adminEmail" class="form-label">
+              <i class="fas fa-envelope"></i> Admin Email
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="adminEmail"
+                name="adminEmail"
+                class="form-input"
+                placeholder="Enter admin email"
+                required
+                autocomplete="email"
+              />
+              <span class="input-icon">
+                <i class="fas fa-envelope"></i>
+              </span>
+            </div>
+            <span class="form-error" id="adminEmailError"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="adminPassword" class="form-label">
+              <i class="fas fa-lock"></i> Password
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="adminPassword"
+                name="adminPassword"
+                class="form-input"
+                placeholder="Enter admin password"
+                required
+                autocomplete="current-password"
+                minlength="6"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggleAdminPassword"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <span class="form-error" id="adminPasswordError"></span>
+          </div>
+
+          <!-- Remember Me -->
+          <div class="form-options">
+            <label class="checkbox-wrapper">
+              <input
+                type="checkbox"
+                id="adminRememberMe"
+                name="adminRememberMe"
+              />
+              <span class="checkmark"></span>
+              <span class="checkbox-label">Remember this device</span>
+            </label>
+          </div>
+
+          <!-- Error Alert -->
+          <div
+            class="alert alert-error"
+            id="adminLoginAlert"
+            style="display: none"
+          >
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="adminLoginAlertMessage"></span>
+          </div>
+
+          <!-- Success Alert -->
+          <div
+            class="alert alert-success"
+            id="adminLoginSuccess"
+            style="display: none"
+          >
+            <i class="fas fa-check-circle"></i>
+            <span id="adminLoginSuccessMessage"></span>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="btn btn-primary btn-full"
+            id="adminLoginBtn"
+          >
+            <span class="btn-text">
+              <i class="fas fa-sign-in-alt"></i> Sign In to Admin Panel
+            </span>
+            <span class="btn-loader" style="display: none">
+              <i class="fas fa-spinner fa-spin"></i> Authenticating...
+            </span>
+          </button>
+        </form>
+
+        <!-- Security Notice -->
+        <div class="admin-security-notice">
+          <div class="security-notice-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="security-notice-text">
+            <p>
+              This is a secured admin area. All login attempts are monitored and
+              logged. Unauthorized access is strictly prohibited.
+            </p>
+          </div>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="admin-login-footer">
+          <a href="../login.html">
+            <i class="fas fa-arrow-left"></i> Back to User Login
+          </a>
+        </div>
+      </div>
+
+      <!-- Bottom Text -->
+      <div class="admin-login-bottom">
+        <p>&copy; 2024 MedAI. All rights reserved.</p>
+        <p>
+          <a href="../index.html">Home</a> | <a href="#">Privacy Policy</a> |
+          <a href="tel:999" class="emergency-link">Emergency: 999</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="../js/config.js"></script>
+    <script src="../js/admin.js"></script>
+
+    <!-- Inline Styles for Admin Login Specific -->
+    <style>
+      /* Security Notice */
+      .admin-security-notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        background: rgba(239, 68, 68, 0.04);
+        border: 1px solid rgba(239, 68, 68, 0.15);
+        border-radius: 12px;
+        margin-top: 20px;
+      }
+
+      .security-notice-icon {
+        flex-shrink: 0;
+        font-size: 1rem;
+        color: #ef4444;
+        margin-top: 1px;
+      }
+
+      .security-notice-text p {
+        font-size: 0.78rem;
+        color: #64748b;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      /* Admin Login Bottom */
+      .admin-login-bottom {
+        text-align: center;
+        margin-top: 24px;
+      }
+
+      .admin-login-bottom p {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 4px 0;
+      }
+
+      .admin-login-bottom a {
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .admin-login-bottom a:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .admin-login-bottom .emergency-link {
+        color: #f87171 !important;
+        font-weight: 600;
+      }
+
+      /* Password Toggle */
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #94a3b8;
+        font-size: 0.9rem;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease;
+        z-index: 1;
+      }
+
+      .toggle-password:hover {
+        color: #2563eb;
+      }
+
+      /* Form Error */
+      .form-error {
+        display: block;
+        font-size: 0.78rem;
+        color: #ef4444;
+        font-weight: 500;
+        margin-top: 6px;
+        min-height: 18px;
+      }
+
+      /* Form Options */
+      .form-options {
+        margin-bottom: 16px;
+      }
+
+      /* Checkbox */
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .checkbox-wrapper input[type="checkbox"] {
+        display: none;
+      }
+
+      .checkmark {
+        width: 18px;
+        height: 18px;
+        border: 1.5px solid #d1d5db;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+        background: #ffffff;
+      }
+
+      .checkbox-wrapper input[type="checkbox"]:checked ~ .checkmark {
+        background: #2563eb;
+        border-color: #2563eb;
+      }
+
+      .checkbox-wrapper input[type="checkbox"]:checked ~ .checkmark::after {
+        content: "\f00c";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        font-size: 0.65rem;
+        color: #ffffff;
+      }
+
+      .checkbox-label {
+        font-size: 0.82rem;
+        color: #374151;
+      }
+
+      /* Alert */
+      .alert {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 16px;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.08);
+        color: #dc2626;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.08);
+        color: #059669;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+      }
+
+      /* Input Wrapper */
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px 42px 12px 14px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        color: #1e293b;
+        background: #ffffff;
+        transition: all 0.2s ease;
+        font-family: "Inter", sans-serif;
+        box-sizing: border-box;
+        outline: none;
+      }
+
+      .form-input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .form-input::placeholder {
+        color: #94a3b8;
+      }
+
+      .input-icon {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 0.875rem;
+        pointer-events: none;
+      }
+
+      /* Form Label */
+      .form-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+      }
+
+      .form-label i {
+        color: #2563eb;
+        font-size: 0.82rem;
+      }
+
+      /* Form Group */
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      /* Button */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        border: 2px solid transparent;
+        font-family: "Inter", sans-serif;
+        outline: none;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+      }
+
+      .btn-full {
+        width: 100%;
+      }
+
+      .btn-loader {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Admin Login Logo */
+      .admin-login-logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #1e293b;
+        text-decoration: none;
+        margin-bottom: 16px;
+      }
+
+      .admin-login-logo i {
+        color: #ef4444;
+        font-size: 1.8rem;
+      }
+
+      .logo-highlight {
+        color: #2563eb;
+      }
+
+      /* Admin Login Header */
+      .admin-login-header {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+
+      .admin-login-header h2 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+      }
+
+      .admin-login-header p {
+        font-size: 0.875rem;
+        color: #64748b;
+      }
+
+      /* Admin Login Badge */
+      .admin-login-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 5px 14px;
+        border-radius: 20px;
+        margin-bottom: 16px;
+      }
+
+      /* Admin Login Footer */
+      .admin-login-footer {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .admin-login-footer a {
+        font-size: 0.85rem;
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.2s ease;
+      }
+
+      .admin-login-footer a:hover {
+        color: #1d4ed8;
+      }
+
+      /* Admin Login Body */
+      .admin-login-body {
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e293b 50%,
+          #0f172a 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Admin Login Container */
+      .admin-login-container {
+        width: 100%;
+        max-width: 420px;
+      }
+
+      /* Admin Login Card */
+      .admin-login-card {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .admin-login-card {
+          padding: 28px 20px;
+          border-radius: 20px;
+        }
+
+        .admin-login-header h2 {
+          font-size: 1.2rem;
+        }
+
+        .admin-login-logo {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <!-- ← ADD -->
+    <script src="../js/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - MedAI Health Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body class="auth-body">
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar">
+      <div class="container navbar-content">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+          <i class="fas fa-heartbeat"></i>
+          <span>Med<span class="logo-highlight">AI</span></span>
+        </a>
+
+        <!-- Nav Links -->
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#features" class="nav-link">Features</a></li>
+          <li>
+            <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+          </li>
+          <li><a href="index.html#about" class="nav-link">About</a></li>
+        </ul>
+
+        <!-- Auth Buttons -->
+        <div class="nav-auth">
+          <a href="login.html" class="btn btn-outline">Login</a>
+          <a href="register.html" class="btn btn-primary active">Sign Up</a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ==================== REGISTER SECTION ==================== -->
+    <section class="auth-section">
+      <div class="container">
+        <div class="auth-wrapper">
+          <!-- Left Side - Illustration -->
+          <div class="auth-left">
+            <div class="auth-illustration">
+              <div class="auth-icon-big">
+                <i class="fas fa-user-plus"></i>
+              </div>
+              <h2>Join MedAI Today</h2>
+              <p>
+                Create your free account and get instant access to AI-powered
+                health analysis tools.
+              </p>
+
+              <div class="auth-features-list">
+                <div class="auth-feature-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Free AI Health Analysis</span>
+                </div>
+                <div class="auth-feature-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Unlimited Symptom Checks</span>
+                </div>
+                <div class="auth-feature-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Secure Medical Image Upload</span>
+                </div>
+                <div class="auth-feature-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Personalized Doctor Matching</span>
+                </div>
+                <div class="auth-feature-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Complete Health History Tracking</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side - Register Form -->
+          <div class="auth-right">
+            <div class="auth-form-container">
+              <!-- Form Header -->
+              <div class="auth-form-header">
+                <h2>Create Account</h2>
+                <p>Fill in your details to get started</p>
+              </div>
+
+              <!-- Progress Steps -->
+              <div class="register-steps">
+                <div class="register-step active" id="step1Indicator">
+                  <span class="step-circle">1</span>
+                  <span class="step-label">Personal Info</span>
+                </div>
+                <div class="step-line" id="stepLine1"></div>
+                <div class="register-step" id="step2Indicator">
+                  <span class="step-circle">2</span>
+                  <span class="step-label">Health Info</span>
+                </div>
+                <div class="step-line" id="stepLine2"></div>
+                <div class="register-step" id="step3Indicator">
+                  <span class="step-circle">3</span>
+                  <span class="step-label">Security</span>
+                </div>
+              </div>
+
+              <!-- Register Form -->
+              <form id="registerForm" class="auth-form">
+                <!-- ========== STEP 1: Personal Info ========== -->
+                <div class="form-step" id="formStep1">
+                  <!-- Full Name -->
+                  <div class="form-group">
+                    <label for="fullName" class="form-label">
+                      <i class="fas fa-user"></i> Full Name
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        class="form-input"
+                        placeholder="Enter your full name"
+                        required
+                        autocomplete="name"
+                        minlength="3"
+                      />
+                      <span class="input-icon">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <span class="form-error" id="fullNameError"></span>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="form-group">
+                    <label for="email" class="form-label">
+                      <i class="fas fa-envelope"></i> Email Address
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="Enter your email"
+                        required
+                        autocomplete="email"
+                      />
+                      <span class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                      </span>
+                    </div>
+                    <span class="form-error" id="emailError"></span>
+                  </div>
+
+                  <!-- Next Button -->
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-full"
+                    id="nextToStep2"
+                  >
+                    <span>Next Step <i class="fas fa-arrow-right"></i></span>
+                  </button>
+                </div>
+
+                <!-- ========== STEP 2: Health Info ========== -->
+                <div class="form-step" id="formStep2" style="display: none">
+                  <!-- Age -->
+                  <div class="form-group">
+                    <label for="age" class="form-label">
+                      <i class="fas fa-birthday-cake"></i> Age
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        class="form-input"
+                        placeholder="Enter your age"
+                        required
+                        min="1"
+                        max="120"
+                        autocomplete="off"
+                      />
+                      <span class="input-icon">
+                        <i class="fas fa-birthday-cake"></i>
+                      </span>
+                    </div>
+                    <span class="form-error" id="ageError"></span>
+                  </div>
+
+                  <!-- Gender -->
+                  <div class="form-group">
+                    <label for="gender" class="form-label">
+                      <i class="fas fa-venus-mars"></i> Gender
+                    </label>
+                    <div class="gender-options">
+                      <label class="gender-option">
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="male"
+                          required
+                        />
+                        <div class="gender-card">
+                          <i class="fas fa-mars"></i>
+                          <span>Male</span>
+                        </div>
+                      </label>
+                      <label class="gender-option">
+                        <input type="radio" name="gender" value="female" />
+                        <div class="gender-card">
+                          <i class="fas fa-venus"></i>
+                          <span>Female</span>
+                        </div>
+                      </label>
+                      <label class="gender-option">
+                        <input type="radio" name="gender" value="other" />
+                        <div class="gender-card">
+                          <i class="fas fa-genderless"></i>
+                          <span>Other</span>
+                        </div>
+                      </label>
+                    </div>
+                    <span class="form-error" id="genderError"></span>
+                  </div>
+
+                  <!-- Navigation Buttons -->
+                  <div class="form-nav-buttons">
+                    <button
+                      type="button"
+                      class="btn btn-outline"
+                      id="backToStep1"
+                    >
+                      <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      id="nextToStep3"
+                    >
+                      Next Step <i class="fas fa-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- ========== STEP 3: Security ========== -->
+                <div class="form-step" id="formStep3" style="display: none">
+                  <!-- Password -->
+                  <div class="form-group">
+                    <label for="password" class="form-label">
+                      <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-input"
+                        placeholder="Create a strong password"
+                        required
+                        autocomplete="new-password"
+                        minlength="6"
+                      />
+                      <button
+                        type="button"
+                        class="toggle-password"
+                        id="togglePassword"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                    <span class="form-error" id="passwordError"></span>
+
+                    <!-- Password Strength Meter -->
+                    <div class="password-strength">
+                      <div class="strength-bars">
+                        <div class="strength-bar" id="strengthBar1"></div>
+                        <div class="strength-bar" id="strengthBar2"></div>
+                        <div class="strength-bar" id="strengthBar3"></div>
+                        <div class="strength-bar" id="strengthBar4"></div>
+                      </div>
+                      <span class="strength-text" id="strengthText"
+                        >Password Strength</span
+                      >
+                    </div>
+
+                    <!-- Password Requirements -->
+                    <div class="password-requirements">
+                      <div class="requirement" id="reqLength">
+                        <i class="fas fa-circle"></i>
+                        <span>At least 6 characters</span>
+                      </div>
+                      <div class="requirement" id="reqUppercase">
+                        <i class="fas fa-circle"></i>
+                        <span>One uppercase letter</span>
+                      </div>
+                      <div class="requirement" id="reqNumber">
+                        <i class="fas fa-circle"></i>
+                        <span>One number</span>
+                      </div>
+                      <div class="requirement" id="reqSpecial">
+                        <i class="fas fa-circle"></i>
+                        <span>One special character</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="form-group">
+                    <label for="confirmPassword" class="form-label">
+                      <i class="fas fa-lock"></i> Confirm Password
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        class="form-input"
+                        placeholder="Confirm your password"
+                        required
+                        autocomplete="new-password"
+                        minlength="6"
+                      />
+                      <button
+                        type="button"
+                        class="toggle-password"
+                        id="toggleConfirmPassword"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                    <span class="form-error" id="confirmPasswordError"></span>
+                  </div>
+
+                  <!-- Terms & Conditions -->
+                  <div class="form-group">
+                    <label class="checkbox-wrapper terms-checkbox">
+                      <input
+                        type="checkbox"
+                        id="agreeTerms"
+                        name="agreeTerms"
+                        required
+                      />
+                      <span class="checkmark"></span>
+                      <span class="checkbox-label">
+                        I agree to the
+                        <a href="#" class="terms-link">Terms of Service</a>
+                        and
+                        <a href="#" class="terms-link">Privacy Policy</a>
+                      </span>
+                    </label>
+                    <span class="form-error" id="termsError"></span>
+                  </div>
+
+                  <!-- Medical Disclaimer Agreement -->
+                  <div class="form-group">
+                    <label class="checkbox-wrapper disclaimer-checkbox">
+                      <input
+                        type="checkbox"
+                        id="agreeDisclaimer"
+                        name="agreeDisclaimer"
+                        required
+                      />
+                      <span class="checkmark"></span>
+                      <span class="checkbox-label">
+                        I understand that MedAI provides educational health
+                        information only and is not a substitute for
+                        professional medical advice, diagnosis, or treatment.
+                      </span>
+                    </label>
+                    <span class="form-error" id="disclaimerError"></span>
+                  </div>
+
+                  <!-- Error Message Box -->
+                  <div
+                    class="alert alert-error"
+                    id="registerAlert"
+                    style="display: none"
+                  >
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="registerAlertMessage"></span>
+                  </div>
+
+                  <!-- Success Message Box -->
+                  <div
+                    class="alert alert-success"
+                    id="registerSuccess"
+                    style="display: none"
+                  >
+                    <i class="fas fa-check-circle"></i>
+                    <span id="registerSuccessMessage"></span>
+                  </div>
+
+                  <!-- Navigation Buttons -->
+                  <div class="form-nav-buttons">
+                    <button
+                      type="button"
+                      class="btn btn-outline"
+                      id="backToStep2"
+                    >
+                      <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      id="registerBtn"
+                    >
+                      <span class="btn-text">
+                        <i class="fas fa-user-plus"></i> Create Account
+                      </span>
+                      <span class="btn-loader" style="display: none">
+                        <i class="fas fa-spinner fa-spin"></i> Creating...
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              <!-- Divider -->
+              <div class="auth-divider">
+                <span>OR</span>
+              </div>
+
+              <!-- Login Link -->
+              <div class="auth-footer-link">
+                <p>
+                  Already have an account?
+                  <a href="login.html">Sign In</a>
+                </p>
+              </div>
+
+              <!-- Security Badge -->
+              <div class="auth-disclaimer">
+                <p>
+                  <i class="fas fa-shield-alt"></i>
+                  Your data is encrypted with 256-bit SSL encryption. We follow
+                  strict data protection standards.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FOOTER MINI ==================== -->
+    <footer class="footer-mini">
+      <div class="container">
+        <p>&copy; 2024 MedAI. All rights reserved.</p>
+        <p>
+          <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> |
+          <a href="tel:999" class="emergency-link">Emergency: 999</a>
+        </p>
+      </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <!-- ==================== SCRIPTS ==================== -->
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+
+        // ==================== STEP BUTTONS ====================
+        var btn1 = document.getElementById('nextToStep2');
+        var btn2 = document.getElementById('nextToStep3');
+        var btn3 = document.getElementById('backToStep1');
+        var btn4 = document.getElementById('backToStep2');
+
+        if (btn1) btn1.onclick = function() { handleNextToStep2(); };
+        if (btn2) btn2.onclick = function() { handleNextToStep3(); };
+        if (btn3) btn3.onclick = function() { goToStep(1); };
+        if (btn4) btn4.onclick = function() { goToStep(2); };
+
+
+
+
+        // ==================== PASSWORD STRENGTH METER ====================
+        if (passInput) {
+            passInput.oninput = function() {
+                var password = this.value;
+
+                // Strength bars
+                var bars = [
+                    document.getElementById('strengthBar1'),
+                    document.getElementById('strengthBar2'),
+                    document.getElementById('strengthBar3'),
+                    document.getElementById('strengthBar4')
+                ];
+                var strengthText = document.getElementById('strengthText');
+
+                // Reset bars
+                bars.forEach(function(bar) {
+                    if (bar) bar.className = 'strength-bar';
+                });
+
+                if (!password) {
+                    if (strengthText) {
+                        strengthText.textContent = 'Password Strength';
+                        strengthText.className = 'strength-text';
+                    }
+                    updateRequirements(password);
+                    return;
+                }
+
+                // Calculate score
+                var score = 0;
+                if (password.length >= 6) score++;
+                if (password.length >= 10) score++;
+                if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+                if (/[0-9]/.test(password)) score++;
+                if (/[^A-Za-z0-9]/.test(password)) score++;
+
+                var level, label, fillCount;
+
+                if (score <= 1) {
+                    level = 'weak'; label = 'Weak'; fillCount = 1;
+                } else if (score === 2) {
+                    level = 'fair'; label = 'Fair'; fillCount = 2;
+                } else if (score === 3) {
+                    level = 'good'; label = 'Good'; fillCount = 3;
+                } else {
+                    level = 'strong'; label = 'Strong'; fillCount = 4;
+                }
+
+                // Update bars
+                bars.forEach(function(bar, index) {
+                    if (bar && index < fillCount) {
+                        bar.className = 'strength-bar ' + level;
+                    }
+                });
+
+                // Update text
+                if (strengthText) {
+                    strengthText.textContent = label;
+                    strengthText.className = 'strength-text ' + level;
+                }
+
+                // Update requirements
+                updateRequirements(password);
+            };
+        }
+
+
+        // ==================== PASSWORD REQUIREMENTS ====================
+        function updateRequirements(password) {
+            var reqs = [
+                { id: 'reqLength', met: password.length >= 6 },
+                { id: 'reqUppercase', met: /[A-Z]/.test(password) },
+                { id: 'reqNumber', met: /[0-9]/.test(password) },
+                { id: 'reqSpecial', met: /[^A-Za-z0-9]/.test(password) }
+            ];
+
+            reqs.forEach(function(req) {
+                var el = document.getElementById(req.id);
+                if (!el) return;
+
+                var icon = el.querySelector('i');
+
+                if (req.met) {
+                    el.classList.add('met');
+                    if (icon) icon.className = 'fas fa-check-circle';
+                } else {
+                    el.classList.remove('met');
+                    if (icon) icon.className = 'fas fa-circle';
+                }
+            });
+        }
+
+
+        // ==================== CONFIRM PASSWORD MATCH ====================
+        if (confirmInput && passInput) {
+            confirmInput.oninput = function() {
+                var errEl = document.getElementById('confirmPasswordError');
+
+                if (this.value && this.value !== passInput.value) {
+                    if (errEl) {
+                        errEl.textContent = 'Passwords do not match';
+                        errEl.style.display = 'flex';
+                    }
+                } else {
+                    if (errEl) {
+                        errEl.textContent = '';
+                        errEl.style.display = 'none';
+                    }
+                }
+            };
+        }
+
+
+        // ==================== FORM SUBMIT PREVENT ====================
+        var form = document.getElementById('registerForm');
+        if (form) {
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            };
+        }
+
+
+        // ==================== REGISTER BUTTON ====================
+        var regBtn = document.getElementById('registerBtn');
+        if (regBtn) {
+            regBtn.onclick = function(e) {
+                e.preventDefault();
+
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById('confirmPassword').value;
+                var agreeTerms = document.getElementById('agreeTerms').checked;
+                var agreeDisclaimer = document.getElementById('agreeDisclaimer').checked;
+
+                if (!password || password.length < 6) {
+                    alert('Password must be at least 6 characters');
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                if (!agreeTerms || !agreeDisclaimer) {
+                    alert('Please agree to terms and disclaimer');
+                    return;
+                }
+
+                var btnText = regBtn.querySelector('.btn-text');
+                var btnLoader = regBtn.querySelector('.btn-loader');
+                if (btnText) btnText.style.display = 'none';
+                if (btnLoader) btnLoader.style.display = 'flex';
+                regBtn.disabled = true;
+
+                fetch(CONFIG.API_BASE_URL + '/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: RegisterState.formData.fullName,
+                        email: RegisterState.formData.email,
+                        password: password,
+                        age: RegisterState.formData.age,
+                        gender: RegisterState.formData.gender
+                    })
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.success && data.token) {
+                        localStorage.setItem('userToken', data.token);
+                        localStorage.setItem('userData', JSON.stringify(data.user));
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        alert(data.message || 'Registration failed');
+                        if (btnText) btnText.style.display = 'flex';
+                        if (btnLoader) btnLoader.style.display = 'none';
+                        regBtn.disabled = false;
+                    }
+                })
+                .catch(function(err) {
+                    alert('Registration failed. Please try again.');
+                    if (btnText) btnText.style.display = 'flex';
+                    if (btnLoader) btnLoader.style.display = 'none';
+                    regBtn.disabled = false;
+                });
+            };
+        }
+
+        console.log('All register features attached!');
+    }, 500);
+});
+</script>
+    <!-- ← line ADD  -->
+  </body>
+</html>

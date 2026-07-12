@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Checker - MedAI Health Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS Files -->
+   <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">  <!-- ADD THIS -->
+    <link rel="stylesheet" href="css/symptom.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Sidebar Logo -->
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>Med<span class="logo-highlight">AI</span></span>
+            </a>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Main Menu</span>
+                <ul>
+                    <li>
+                        <a href="dashboard.html" class="sidebar-link">
+                            <i class="fas fa-th-large"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="symptom-checker.html" class="sidebar-link active">
+                            <i class="fas fa-stethoscope"></i>
+                            <span>Symptom Checker</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="results.html" class="sidebar-link">
+                            <i class="fas fa-file-medical-alt"></i>
+                            <span>Results</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Account</span>
+                <ul>
+                    <li>
+                        <a href="dashboard.html" class="sidebar-link">
+                            <i class="fas fa-user-circle"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link logout-link" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+    </aside>
+
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="topbar-title">
+                    <h1>Symptom Checker</h1>
+                    <p>Describe your symptoms for AI analysis</p>
+                </div>
+            </div>
+            <div class="topbar-right">
+
+                <!-- Language Selector (NEW) -->
+                <div class="symptom-language-selector">
+                    <button class="symptom-lang-btn" id="symptomLangBtn" title="Select response language">
+                        <span class="symptom-lang-flag">🇬🇧</span>
+                        <span class="symptom-lang-code">EN</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+
+                    <div class="symptom-lang-dropdown" id="symptomLangDropdown" style="display: none;">
+                        <div class="symptom-lang-header">
+                            <i class="fas fa-globe"></i>
+                            <span>Response Language</span>
+                        </div>
+
+                        <button class="symptom-lang-option active" data-lang="en">
+                            <span class="lang-flag">🇬🇧</span>
+                            <div class="lang-info">
+                                <span class="lang-name">English</span>
+                                <span class="lang-native">English</span>
+                            </div>
+                            <i class="fas fa-check lang-check"></i>
+                        </button>
+
+                        <button class="symptom-lang-option" data-lang="hi">
+                            <span class="lang-flag">🇮🇳</span>
+                            <div class="lang-info">
+                                <span class="lang-name">Hindi</span>
+                                <span class="lang-native">हिन्दी</span>
+                            </div>
+                            <i class="fas fa-check lang-check"></i>
+                        </button>
+
+                        <button class="symptom-lang-option" data-lang="bn">
+                            <span class="lang-flag">🇧🇩</span>
+                            <div class="lang-info">
+                                <span class="lang-name">Bengali</span>
+                                <span class="lang-native">বাংলা</span>
+                            </div>
+                            <i class="fas fa-check lang-check"></i>
+                        </button>
+
+                        <button class="symptom-lang-option" data-lang="hinglish">
+                            <span class="lang-flag">🇮🇳</span>
+                            <div class="lang-info">
+                                <span class="lang-name">Hinglish</span>
+                                <span class="lang-native">Hindi + English</span>
+                            </div>
+                            <i class="fas fa-check lang-check"></i>
+                        </button>
+
+                        <button class="symptom-lang-option" data-lang="benglish">
+                            <span class="lang-flag">🇧🇩</span>
+                            <div class="lang-info">
+                                <span class="lang-name">Benglish</span>
+                                <span class="lang-native">Bengali + English</span>
+                            </div>
+                            <i class="fas fa-check lang-check"></i>
+                        </button>
+
+                        <button class="symptom-lang-option" data-lang="auto">
+                            <span class="lang-flag">🌐</span>
+                            <div class="lang-info">
+                                <span class="lang-name">Auto Detect</span>
+                                <span class="lang-native">Detect language</span>
+                            </div>
+                            <i class="fas fa-check lang-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <a href="dashboard.html" class="btn btn-outline btn-sm">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+            </div>
+        </header>
+
+
+        <!-- Symptom Checker Content -->
+        <div class="symptom-content">
+
+            <!-- ==================== PROGRESS BAR ==================== -->
+            <div class="progress-section">
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar" id="progressBar" style="width: 33%;"></div>
+                </div>
+                <div class="progress-steps">
+                    <div class="progress-step active" id="progressStep1">
+                        <span class="progress-circle">1</span>
+                        <span class="progress-label">Basic Info</span>
+                    </div>
+                    <div class="progress-step" id="progressStep2">
+                        <span class="progress-circle">2</span>
+                        <span class="progress-label">Symptoms</span>
+                    </div>
+                    <div class="progress-step" id="progressStep3">
+                        <span class="progress-circle">3</span>
+                        <span class="progress-label">Review</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ==================== STEP 1: BASIC INFO ==================== -->
+            <div class="checker-step" id="checkerStep1">
+
+                <div class="step-header">
+                    <div class="step-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <h2>Basic Information</h2>
+                    <p>Provide your basic details for a more accurate analysis</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-form">
+
+                        <!-- Age -->
+                        <div class="form-group">
+                            <label for="patientAge" class="form-label">
+                                <i class="fas fa-birthday-cake"></i> Age
+                            </label>
+                            <div class="input-wrapper">
+                                <input
+                                    type="number"
+                                    id="patientAge"
+                                    class="form-input"
+                                    placeholder="Enter your age"
+                                    min="1"
+                                    max="120"
+                                    required
+                                >
+                                <span class="input-icon">
+                                    <i class="fas fa-birthday-cake"></i>
+                                </span>
+                            </div>
+                            <span class="form-error" id="ageError"></span>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-venus-mars"></i> Gender
+                            </label>
+                            <div class="gender-select-options">
+                                <label class="gender-select-option">
+                                    <input type="radio" name="patientGender" value="male" required>
+                                    <div class="gender-select-card">
+                                        <i class="fas fa-mars"></i>
+                                        <span>Male</span>
+                                    </div>
+                                </label>
+                                <label class="gender-select-option">
+                                    <input type="radio" name="patientGender" value="female">
+                                    <div class="gender-select-card">
+                                        <i class="fas fa-venus"></i>
+                                        <span>Female</span>
+                                    </div>
+                                </label>
+                                <label class="gender-select-option">
+                                    <input type="radio" name="patientGender" value="other">
+                                    <div class="gender-select-card">
+                                        <i class="fas fa-genderless"></i>
+                                        <span>Other</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <span class="form-error" id="genderError"></span>
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="form-group">
+                            <label for="symptomDuration" class="form-label">
+                                <i class="fas fa-clock"></i> How long have you had symptoms?
+                            </label>
+                            <select id="symptomDuration" class="form-input">
+                                <option value="">Select duration</option>
+                                <option value="today">Just today</option>
+                                <option value="2-3 days">2-3 days</option>
+                                <option value="1 week">About 1 week</option>
+                                <option value="2 weeks">About 2 weeks</option>
+                                <option value="1 month">About 1 month</option>
+                                <option value="more than 1 month">More than 1 month</option>
+                            </select>
+                            <span class="form-error" id="durationError"></span>
+                        </div>
+
+                        <!-- Next Button -->
+                        <button type="button" class="btn btn-primary btn-full" id="step1NextBtn">
+                            Next: Describe Symptoms <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ==================== STEP 2: SYMPTOMS INPUT ==================== -->
+            <div class="checker-step" id="checkerStep2" style="display: none;">
+
+                <div class="step-header">
+                    <div class="step-icon">
+                        <i class="fas fa-notes-medical"></i>
+                    </div>
+                    <h2>Describe Your Symptoms</h2>
+                    <p>Use text, voice, or upload images to describe your condition</p>
+                </div>
+
+                <!-- Input Method Tabs -->
+                <div class="input-tabs">
+                    <button class="input-tab active" id="textTab" data-tab="text">
+                        <i class="fas fa-keyboard"></i>
+                        <span>Text Input</span>
+                    </button>
+                    <button class="input-tab" id="voiceTab" data-tab="voice">
+                        <i class="fas fa-microphone"></i>
+                        <span>Voice Input</span>
+                    </button>
+                    <button class="input-tab" id="imageTab" data-tab="image">
+                        <i class="fas fa-camera"></i>
+                        <span>Image Upload</span>
+                    </button>
+                </div>
+
+
+                <!-- ========== TEXT INPUT PANEL ========== -->
+                <div class="input-panel" id="textPanel">
+                    <div class="step-card">
+
+                        <div class="text-input-section">
+                            <label for="symptomsText" class="form-label">
+                                <i class="fas fa-edit"></i> Describe your symptoms in detail
+                            </label>
+                            <div class="textarea-wrapper">
+                                <textarea
+                                    id="symptomsText"
+                                    class="form-textarea"
+                                    rows="8"
+                                    placeholder="Example: I have been having a severe headache for the past 3 days. I also feel dizzy when I stand up. My temperature is around 101F. I feel weak and tired throughout the day..."
+                                    maxlength="2000"
+                                ></textarea>
+                                <div class="textarea-footer">
+                                    <span class="char-count">
+                                        <span id="charCount">0</span> / 2000
+                                    </span>
+                                    <button type="button" class="btn btn-sm btn-outline" id="clearTextBtn">
+                                        <i class="fas fa-eraser"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Common Symptoms Quick Select -->
+                        <div class="quick-symptoms">
+                            <h4><i class="fas fa-bolt"></i> Quick Add Common Symptoms</h4>
+                            <div class="symptom-tags" id="symptomTags">
+                                <button type="button" class="symptom-tag" data-symptom="Headache">
+                                    <i class="fas fa-head-side-virus"></i> Headache
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Fever">
+                                    <i class="fas fa-thermometer-half"></i> Fever
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Cough">
+                                    <i class="fas fa-lungs-virus"></i> Cough
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Sore throat">
+                                    <i class="fas fa-head-side-cough"></i> Sore Throat
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Body pain">
+                                    <i class="fas fa-bone"></i> Body Pain
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Fatigue">
+                                    <i class="fas fa-battery-quarter"></i> Fatigue
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Nausea">
+                                    <i class="fas fa-dizzy"></i> Nausea
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Dizziness">
+                                    <i class="fas fa-spinner"></i> Dizziness
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Rash on skin">
+                                    <i class="fas fa-allergies"></i> Skin Rash
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Eye redness">
+                                    <i class="fas fa-eye"></i> Eye Redness
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Difficulty breathing">
+                                    <i class="fas fa-lungs"></i> Breathing Issue
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Stomach pain">
+                                    <i class="fas fa-stomach"></i> Stomach Pain
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Vomiting">
+                                    <i class="fas fa-head-side-virus"></i> Vomiting
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Chest pain">
+                                    <i class="fas fa-heartbeat"></i> Chest Pain
+                                </button>
+                                <button type="button" class="symptom-tag" data-symptom="Joint pain">
+                                    <i class="fas fa-bone"></i> Joint Pain
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- ========== VOICE INPUT PANEL ========== -->
+                <div class="input-panel" id="voicePanel" style="display: none;">
+                    <div class="step-card">
+
+                        <div class="voice-input-section">
+
+                            <!-- Voice Status -->
+                            <div class="voice-status" id="voiceStatus">
+                                <div class="voice-icon-wrapper" id="voiceIconWrapper">
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                                <p class="voice-status-text" id="voiceStatusText">
+                                    Click the microphone to start speaking
+                                </p>
+                            </div>
+
+                            <!-- Voice Button -->
+                            <div class="voice-button-wrapper">
+                                <button type="button" class="voice-record-btn" id="voiceRecordBtn">
+                                    <i class="fas fa-microphone" id="voiceBtnIcon"></i>
+                                </button>
+                                <span class="voice-btn-label" id="voiceBtnLabel">Tap to Speak</span>
+                            </div>
+
+                            <!-- Voice Wave Animation -->
+                            <div class="voice-wave" id="voiceWave" style="display: none;">
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                            </div>
+
+                            <!-- Language Select -->
+                            <div class="voice-language">
+                                <label for="voiceLanguage" class="form-label">
+                                    <i class="fas fa-language"></i> Speaking Language
+                                </label>
+                                <select id="voiceLanguage" class="form-input">
+                                    <option value="en-US">English</option>
+                                    <option value="bn-BD">Bengali</option>
+                                </select>
+                            </div>
+
+                            <!-- Voice Transcription -->
+                            <div class="voice-transcription">
+                                <label class="form-label">
+                                    <i class="fas fa-closed-captioning"></i> Live Transcription
+                                </label>
+                                <div class="transcription-box" id="transcriptionBox">
+                                    <p class="transcription-text" id="transcriptionText">
+                                        Your speech will appear here in real-time...
+                                    </p>
+                                </div>
+                                <div class="transcription-actions">
+                                    <button type="button" class="btn btn-sm btn-outline" id="clearTranscription">
+                                        <i class="fas fa-eraser"></i> Clear
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-primary" id="useTranscription">
+                                        <i class="fas fa-check"></i> Use This Text
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Browser Support Warning -->
+                            <div class="voice-warning" id="voiceWarning" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>Voice input is not supported in your browser. Please use
+                                Google Chrome or Microsoft Edge for voice features.</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- ========== IMAGE UPLOAD PANEL ========== -->
+                <div class="input-panel" id="imagePanel" style="display: none;">
+                    <div class="step-card">
+
+                        <div class="image-upload-section">
+
+                            <!-- Image Type Selector -->
+                            <div class="image-type-selector">
+                                <label class="form-label">
+                                    <i class="fas fa-tag"></i> Image Type
+                                </label>
+                                <div class="image-type-options">
+                                    <label class="image-type-option">
+                                        <input type="radio" name="imageType" value="skin" checked>
+                                        <div class="image-type-card">
+                                            <i class="fas fa-hand-paper"></i>
+                                            <span>Skin</span>
+                                        </div>
+                                    </label>
+                                    <label class="image-type-option">
+                                        <input type="radio" name="imageType" value="eye">
+                                        <div class="image-type-card">
+                                            <i class="fas fa-eye"></i>
+                                            <span>Eye</span>
+                                        </div>
+                                    </label>
+                                    <label class="image-type-option">
+                                        <input type="radio" name="imageType" value="throat">
+                                        <div class="image-type-card">
+                                            <i class="fas fa-head-side-cough"></i>
+                                            <span>Throat</span>
+                                        </div>
+                                    </label>
+                                    <label class="image-type-option">
+                                        <input type="radio" name="imageType" value="other">
+                                        <div class="image-type-card">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Other</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Drag and Drop Zone -->
+                            <div class="drop-zone" id="dropZone">
+                                <div class="drop-zone-content">
+                                    <div class="drop-zone-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h3>Drag and Drop Images Here</h3>
+                                    <p>or click to browse files</p>
+                                    <span class="drop-zone-info">
+                                        Supports: JPG, PNG, WEBP | Max: 5MB | Up to 3 images
+                                    </span>
+                                </div>
+                                <input
+                                    type="file"
+                                    id="imageInput"
+                                    class="drop-zone-input"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    multiple
+                                >
+                            </div>
+
+                            <!-- Image Preview Grid -->
+                            <div class="image-preview-grid" id="imagePreviewGrid" style="display: none;">
+                                <!-- Image previews will be loaded by JavaScript -->
+                            </div>
+
+                            <!-- Image Upload Info -->
+                            <div class="image-upload-info">
+                                <div class="upload-info-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Take clear, well-lit photos for best results</span>
+                                </div>
+                                <div class="upload-info-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Focus on the affected area only</span>
+                                </div>
+                                <div class="upload-info-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Avoid blurry or dark images</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- ========== ADDITIONAL NOTES ========== -->
+                <div class="step-card additional-notes-card">
+                    <div class="additional-notes-section">
+                        <label for="additionalNotes" class="form-label">
+                            <i class="fas fa-sticky-note"></i> Additional Notes (Optional)
+                        </label>
+                        <textarea
+                            id="additionalNotes"
+                            class="form-textarea"
+                            rows="3"
+                            placeholder="Any additional information such as existing medical conditions, medications you are taking, allergies, recent travel history, etc."
+                            maxlength="500"
+                        ></textarea>
+                    </div>
+                </div>
+
+
+                <!-- Step 2 Navigation -->
+                <div class="step-nav-buttons">
+                    <button type="button" class="btn btn-outline btn-lg" id="step2BackBtn">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button type="button" class="btn btn-primary btn-lg" id="step2NextBtn">
+                        Next: Review <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+
+
+            <!-- ==================== STEP 3: REVIEW & SUBMIT ==================== -->
+            <div class="checker-step" id="checkerStep3" style="display: none;">
+
+                <div class="step-header">
+                    <div class="step-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h2>Review Your Information</h2>
+                    <p>Please review all details before submitting for AI analysis</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="review-section">
+
+                        <!-- Patient Info Review -->
+                        <div class="review-block">
+                            <div class="review-block-header">
+                                <h3><i class="fas fa-user"></i> Patient Information</h3>
+                                <button type="button" class="btn btn-sm btn-outline" id="editStep1Btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </div>
+                            <div class="review-details">
+                                <div class="review-item">
+                                    <span class="review-label">Age:</span>
+                                    <span class="review-value" id="reviewAge">--</span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="review-label">Gender:</span>
+                                    <span class="review-value" id="reviewGender">--</span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="review-label">Duration:</span>
+                                    <span class="review-value" id="reviewDuration">--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Symptoms Review -->
+                        <div class="review-block">
+                            <div class="review-block-header">
+                                <h3><i class="fas fa-notes-medical"></i> Symptoms Description</h3>
+                                <button type="button" class="btn btn-sm btn-outline" id="editStep2Btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </div>
+                            <div class="review-details">
+                                <div class="review-item review-item-full">
+                                    <span class="review-label">Symptoms:</span>
+                                    <p class="review-text" id="reviewSymptoms">--</p>
+                                </div>
+                                <div class="review-item review-item-full" id="reviewNotesBlock" style="display: none;">
+                                    <span class="review-label">Additional Notes:</span>
+                                    <p class="review-text" id="reviewNotes">--</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Method Review -->
+                        <div class="review-block">
+                            <div class="review-block-header">
+                                <h3><i class="fas fa-sliders-h"></i> Input Methods Used</h3>
+                            </div>
+                            <div class="review-details">
+                                <div class="review-badges" id="reviewInputMethods">
+                                    <!-- Badges will be loaded by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Images Review -->
+                        <div class="review-block" id="reviewImagesBlock" style="display: none;">
+                            <div class="review-block-header">
+                                <h3><i class="fas fa-images"></i> Uploaded Images</h3>
+                                <button type="button" class="btn btn-sm btn-outline" id="editImagesBtn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </div>
+                            <div class="review-images" id="reviewImages">
+                                <!-- Image previews will be loaded by JavaScript -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Disclaimer Agreement -->
+                <div class="step-card disclaimer-card">
+                    <div class="disclaimer-agreement">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="agreeAnalysis" required>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">
+                                I understand that this AI analysis is for educational purposes
+                                only and does not replace professional medical consultation.
+                                I agree to the terms and conditions.
+                            </span>
+                        </label>
+                        <span class="form-error" id="agreeError"></span>
+                    </div>
+                </div>
+
+                <!-- Step 3 Navigation -->
+                <div class="step-nav-buttons">
+                    <button type="button" class="btn btn-outline btn-lg" id="step3BackBtn">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button type="button" class="btn btn-primary btn-lg btn-analyze" id="analyzeBtn">
+                        <span class="btn-text">
+                            <i class="fas fa-brain"></i> Analyze Symptoms
+                        </span>
+                        <span class="btn-loader" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> Analyzing...
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Analysis Info -->
+                <div class="analysis-info">
+                    <div class="analysis-info-item">
+                        <i class="fas fa-lock"></i>
+                        <span>Your data is encrypted and secure</span>
+                    </div>
+                    <div class="analysis-info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Analysis takes approximately 10-30 seconds</span>
+                    </div>
+                    <div class="analysis-info-item">
+                        <i class="fas fa-robot"></i>
+                        <span>Powered by Google Gemini AI</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==================== CAMERA MODAL ==================== -->
+    <div class="modal-overlay" id="cameraModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-camera"></i> Take Photo</h2>
+                <button class="modal-close" id="cameraModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="camera-section">
+                    <video id="cameraFeed" autoplay playsinline></video>
+                    <canvas id="cameraCanvas" style="display: none;"></canvas>
+                    <div class="camera-controls">
+                        <button class="btn btn-primary btn-lg" id="captureBtn">
+                            <i class="fas fa-camera"></i> Capture
+                        </button>
+                        <button class="btn btn-outline btn-lg" id="switchCameraBtn">
+                            <i class="fas fa-sync-alt"></i> Switch
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== IMAGE CROP MODAL ==================== -->
+    <div class="modal-overlay" id="cropModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-crop-alt"></i> Adjust Image</h2>
+                <button class="modal-close" id="cropModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="crop-section">
+                    <div class="crop-preview">
+                        <img src="" alt="Crop Preview" id="cropImage">
+                    </div>
+                    <div class="crop-controls">
+                        <button class="btn btn-outline" id="rotateCropBtn">
+                            <i class="fas fa-redo"></i> Rotate
+                        </button>
+                        <button class="btn btn-primary" id="applyCropBtn">
+                            <i class="fas fa-check"></i> Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/imageUpload.js"></script>
+    <script src="js/app.js"></script>
+   <script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+
+        // ==================== ANALYZE BUTTON FIX ====================
+        var analyzeBtn = document.getElementById('analyzeBtn');
+        if (analyzeBtn) {
+            analyzeBtn.onclick = function(e) {
+                e.preventDefault();
+
+                // Check agreement
+                var agree = document.getElementById('agreeAnalysis');
+                if (!agree || !agree.checked) {
+                    alert('Please agree to the terms before analyzing');
+                    return;
+                }
+
+                // Get symptoms text
+                var symptomsText = '';
+                var textarea = document.getElementById('symptomsText');
+                if (textarea) symptomsText = textarea.value.trim();
+
+                if (symptomsText.length < 10) {
+                    alert('Please describe your symptoms (minimum 10 characters)');
+                    return;
+                }
+
+                // Get patient data
+                var age = document.getElementById('patientAge') ? document.getElementById('patientAge').value : 25;
+                var gender = document.querySelector('input[name="patientGender"]:checked');
+                gender = gender ? gender.value : 'male';
+                var duration = document.getElementById('symptomDuration') ? document.getElementById('symptomDuration').value : '';
+                var notes = document.getElementById('additionalNotes') ? document.getElementById('additionalNotes').value : '';
+                var language = localStorage.getItem('chatLanguage') || 'en';
+
+                // Show loading
+                var btnText = analyzeBtn.querySelector('.btn-text');
+                var btnLoader = analyzeBtn.querySelector('.btn-loader');
+                if (btnText) btnText.style.display = 'none';
+                if (btnLoader) btnLoader.style.display = 'flex';
+                analyzeBtn.disabled = true;
+
+                console.log('Analyzing symptoms...');
+
+                // Call API
+                fetch(CONFIG.API_BASE_URL + '/api/symptoms/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('userToken')
+                    },
+                    body: JSON.stringify({
+                        symptoms_text: symptomsText,
+                        additional_notes: notes,
+                        age: parseInt(age),
+                        gender: gender,
+                        duration: duration,
+                        input_type: 'text',
+                        language: language,
+                        images: [],
+                        image_types: []
+                    })
+                })
+                .then(function(r) {
+                    console.log('Response status:', r.status);
+                    return r.json();
+                })
+                .then(function(data) {
+                    console.log('Analysis result:', data);
+
+                    if (data.success) {
+                        // Save results
+                        var resultsData = {
+                            success: true,
+                            diagnosis: data.diagnosis,
+                            diagnosis_id: data.diagnosis_id,
+                            log_id: data.log_id,
+                            recommended_doctors: data.recommended_doctors,
+                            patient: {
+                                age: parseInt(age),
+                                gender: gender,
+                                duration: duration
+                            },
+                            symptoms_text: symptomsText,
+                            input_methods: ['text'],
+                            language: language,
+                            timestamp: new Date().toISOString()
+                        };
+
+                        localStorage.setItem('latestResults', JSON.stringify(resultsData));
+                        console.log('Results saved, redirecting...');
+
+                        // Redirect to results
+                        window.location.href = 'results.html';
+                    } else {
+                        alert(data.message || 'Analysis failed. Please try again.');
+                        if (btnText) btnText.style.display = 'flex';
+                        if (btnLoader) btnLoader.style.display = 'none';
+                        analyzeBtn.disabled = false;
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Analysis error:', err);
+                    alert('Analysis failed. Please check your connection.');
+                    if (btnText) btnText.style.display = 'flex';
+                    if (btnLoader) btnLoader.style.display = 'none';
+                    analyzeBtn.disabled = false;
+                });
+            };
+        }
+
+        // ==================== STEP BUTTONS ====================
+        var btn1 = document.getElementById('step1NextBtn');
+        var btn2 = document.getElementById('step2NextBtn');
+        var btn3 = document.getElementById('step2BackBtn');
+        var btn4 = document.getElementById('step3BackBtn');
+
+        if (btn1) {
+            btn1.onclick = function() {
+                var age = document.getElementById('patientAge').value;
+                var gender = document.querySelector('input[name="patientGender"]:checked');
+
+                if (!age || age < 1 || age > 120) {
+                    alert('Please enter a valid age (1-120)');
+                    return;
+                }
+                if (!gender) {
+                    alert('Please select your gender');
+                    return;
+                }
+
+                document.getElementById('checkerStep1').style.display = 'none';
+                document.getElementById('checkerStep2').style.display = 'block';
+
+                // Update progress
+                document.getElementById('progressStep1').classList.remove('active');
+                document.getElementById('progressStep1').classList.add('completed');
+                document.getElementById('progressStep2').classList.add('active');
+                document.getElementById('progressBar').style.width = '50%';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+        }
+
+        if (btn2) {
+            btn2.onclick = function() {
+                var symptoms = document.getElementById('symptomsText').value.trim();
+
+                if (symptoms.length < 10) {
+                    alert('Please describe your symptoms (minimum 10 characters)');
+                    return;
+                }
+
+                // Update review
+                var reviewAge = document.getElementById('reviewAge');
+                var reviewGender = document.getElementById('reviewGender');
+                var reviewDuration = document.getElementById('reviewDuration');
+                var reviewSymptoms = document.getElementById('reviewSymptoms');
+
+                if (reviewAge) reviewAge.textContent = document.getElementById('patientAge').value;
+                if (reviewGender) {
+                    var g = document.querySelector('input[name="patientGender"]:checked');
+                    reviewGender.textContent = g ? g.value : '--';
+                }
+                if (reviewDuration) reviewDuration.textContent = document.getElementById('symptomDuration').value || 'Not specified';
+                if (reviewSymptoms) reviewSymptoms.textContent = symptoms;
+
+                document.getElementById('checkerStep2').style.display = 'none';
+                document.getElementById('checkerStep3').style.display = 'block';
+
+                // Update progress
+                document.getElementById('progressStep2').classList.remove('active');
+                document.getElementById('progressStep2').classList.add('completed');
+                document.getElementById('progressStep3').classList.add('active');
+                document.getElementById('progressBar').style.width = '100%';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+        }
+
+        if (btn3) {
+            btn3.onclick = function() {
+                document.getElementById('checkerStep2').style.display = 'none';
+                document.getElementById('checkerStep1').style.display = 'block';
+
+                document.getElementById('progressStep2').classList.remove('active');
+                document.getElementById('progressStep1').classList.remove('completed');
+                document.getElementById('progressStep1').classList.add('active');
+                document.getElementById('progressBar').style.width = '33%';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+        }
+
+        if (btn4) {
+            btn4.onclick = function() {
+                document.getElementById('checkerStep3').style.display = 'none';
+                document.getElementById('checkerStep2').style.display = 'block';
+
+                document.getElementById('progressStep3').classList.remove('active');
+                document.getElementById('progressStep2').classList.remove('completed');
+                document.getElementById('progressStep2').classList.add('active');
+                document.getElementById('progressBar').style.width = '50%';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+        }
+
+        console.log('Symptom checker fully loaded!');
+    }, 500);
+});
+</script>
+
+</body>
+</html>

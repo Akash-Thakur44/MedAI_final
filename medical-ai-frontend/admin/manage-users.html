@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - MedAI Admin</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="admin-body">
+
+    <!-- ==================== SIDEBAR OVERLAY ==================== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+    <!-- ==================== ADMIN SIDEBAR ==================== -->
+    <aside class="admin-sidebar" id="adminSidebar">
+
+        <!-- Sidebar Header -->
+        <div class="admin-sidebar-header">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>Med<span class="logo-highlight">AI</span></span>
+            </a>
+            <span class="admin-badge">Admin</span>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="admin-sidebar-nav">
+
+            <div class="admin-nav-section">
+                <span class="admin-nav-title">Overview</span>
+                <a href="admin-dashboard.html" class="admin-nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+
+            <div class="admin-nav-section">
+                <span class="admin-nav-title">Management</span>
+                <a href="manage-users.html" class="admin-nav-link active">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <a href="manage-doctors.html" class="admin-nav-link">
+                    <i class="fas fa-user-md"></i>
+                    <span>Doctors</span>
+                </a>
+            </div>
+
+            <div class="admin-nav-section">
+                <span class="admin-nav-title">Analytics</span>
+                <a href="#" class="admin-nav-link">
+                    <i class="fas fa-file-medical-alt"></i>
+                    <span>Diagnoses</span>
+                </a>
+                <a href="#" class="admin-nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Reports</span>
+                </a>
+            </div>
+
+            <div class="admin-nav-section">
+                <span class="admin-nav-title">System</span>
+                <a href="#" class="admin-nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="admin-nav-link" id="adminLogoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="admin-sidebar-footer">
+            <div class="admin-sidebar-user">
+                <div class="admin-sidebar-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="admin-sidebar-info">
+                    <span class="admin-sidebar-name" id="adminName">Admin</span>
+                    <span class="admin-sidebar-role">Super Admin</span>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="admin-main" id="adminMain">
+
+        <!-- Admin Topbar -->
+        <header class="admin-topbar">
+            <div class="admin-topbar-left">
+                <button class="admin-toggle-btn" id="adminToggleBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="admin-topbar-title">
+                    <h1>Manage Users</h1>
+                    <p>View and manage registered user accounts</p>
+                </div>
+            </div>
+            <div class="admin-topbar-right">
+                <button class="btn btn-outline btn-sm" id="exportUsersBtn">
+                    <i class="fas fa-download"></i> Export CSV
+                </button>
+            </div>
+        </header>
+
+
+        <!-- Admin Content -->
+        <div class="admin-content">
+
+            <!-- ==================== STATS CARDS ==================== -->
+            <div class="admin-stats-grid">
+
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon icon-blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <span class="admin-stat-number" id="statTotalUsers">0</span>
+                        <span class="admin-stat-label">Total Users</span>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon icon-green">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <span class="admin-stat-number" id="statActiveUsers">0</span>
+                        <span class="admin-stat-label">Active Users</span>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon icon-red">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <span class="admin-stat-number" id="statInactiveUsers">0</span>
+                        <span class="admin-stat-label">Inactive Users</span>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon icon-purple">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <span class="admin-stat-number" id="statTotalCheckups">0</span>
+                        <span class="admin-stat-label">Total Checkups</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ==================== FILTER BAR ==================== -->
+            <div class="admin-filter-bar">
+                <div class="admin-search-wrapper">
+                    <i class="fas fa-search admin-search-icon"></i>
+                    <input
+                        type="text"
+                        class="admin-search-input"
+                        id="userSearchInput"
+                        placeholder="Search users by name or email..."
+                    >
+                </div>
+                <select class="admin-filter-select" id="roleFilter">
+                    <option value="">All Roles</option>
+                    <option value="user">Users</option>
+                    <option value="admin">Admins</option>
+                </select>
+                <select class="admin-filter-select" id="userStatusFilter">
+                    <option value="">All Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+                <select class="admin-filter-select" id="genderFilter">
+                    <option value="">All Genders</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+
+            <!-- ==================== ALERT MESSAGES ==================== -->
+            <div class="admin-alert alert-success" id="userSuccessAlert" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <span id="userSuccessMessage"></span>
+            </div>
+
+            <div class="admin-alert alert-error" id="userErrorAlert" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="userErrorMessage"></span>
+            </div>
+
+
+            <!-- ==================== USERS TABLE ==================== -->
+            <div class="admin-card">
+
+                <!-- Loading State -->
+                <div class="admin-loading-state" id="usersLoading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading users...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div class="admin-empty-state" id="usersEmpty" style="display: none;">
+                    <div class="admin-empty-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>No Users Found</h3>
+                    <p>No users match your search criteria</p>
+                </div>
+
+                <!-- Table -->
+                <div class="admin-table-wrapper" id="usersTableWrapper" style="display: none;">
+                    <table class="admin-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Role</th>
+                                <th>Checkups</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Rows will be loaded by JavaScript -->
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="admin-pagination">
+                        <span class="pagination-info" id="usersPaginationInfo">
+                            Showing 0-0 of 0 users
+                        </span>
+                        <div class="pagination-buttons" id="usersPagination">
+                            <!-- Buttons will be loaded by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==================== VIEW USER MODAL ==================== -->
+    <div class="admin-modal-overlay" id="viewUserModal" style="display: none;">
+        <div class="admin-modal admin-modal-large">
+            <div class="admin-modal-header">
+                <h2><i class="fas fa-user-circle"></i> User Details</h2>
+                <button class="admin-modal-close" id="viewUserClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="admin-modal-body">
+
+                <!-- User Profile -->
+                <div class="admin-user-detail-card">
+                    <div class="admin-user-detail-header">
+                        <div class="admin-user-detail-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="admin-user-detail-name" id="viewUserName">--</div>
+                            <div class="admin-user-detail-email" id="viewUserEmail">--</div>
+                        </div>
+                    </div>
+                    <div class="admin-user-detail-grid">
+                        <div class="admin-user-detail-item">
+                            <div class="admin-user-detail-label">Age</div>
+                            <div class="admin-user-detail-value" id="viewUserAge">--</div>
+                        </div>
+                        <div class="admin-user-detail-item">
+                            <div class="admin-user-detail-label">Gender</div>
+                            <div class="admin-user-detail-value" id="viewUserGender">--</div>
+                        </div>
+                        <div class="admin-user-detail-item">
+                            <div class="admin-user-detail-label">Role</div>
+                            <div class="admin-user-detail-value" id="viewUserRole">--</div>
+                        </div>
+                        <div class="admin-user-detail-item">
+                            <div class="admin-user-detail-label">Status</div>
+                            <div class="admin-user-detail-value" id="viewUserStatus">--</div>
+                        </div>
+                        <div class="admin-user-detail-item">
+                            <div class="admin-user-detail-label">Joined</div>
+                            <div class="admin-user-detail-value" id="viewUserJoined">--</div>
+                        </div>
+                        <div class="admin-user-detail-item">
+                            <div class="admin-user-detail-label">Last Login</div>
+                            <div class="admin-user-detail-value" id="viewUserLastLogin">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Diagnosis History -->
+                <div class="admin-card" style="box-shadow: none;">
+                    <div class="admin-card-header">
+                        <h4 style="font-size: 0.9rem; font-weight: 700; color: #1e293b; margin: 0;">
+                            <i class="fas fa-history" style="color: #3b82f6;"></i> Diagnosis History
+                        </h4>
+                    </div>
+
+                    <!-- History Loading -->
+                    <div class="admin-loading-state" id="userHistoryLoading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading history...</p>
+                    </div>
+
+                    <!-- History Empty -->
+                    <div class="admin-empty-state" id="userHistoryEmpty" style="display: none;">
+                        <div class="admin-empty-icon" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3 style="font-size: 0.9rem;">No History</h3>
+                        <p style="font-size: 0.78rem;">This user has no diagnosis history</p>
+                    </div>
+
+                    <!-- History Table -->
+                    <div class="admin-table-wrapper" id="userHistoryTable" style="display: none;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Disease</th>
+                                    <th>Severity</th>
+                                    <th>Confidence</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userHistoryBody">
+                                <!-- Rows will be loaded by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="admin-modal-footer" style="margin-top: 16px; padding: 16px 0 0; border-top: 1px solid #f1f5f9;">
+                    <button class="btn btn-outline btn-sm" id="toggleUserStatusBtn">
+                        <i class="fas fa-toggle-on"></i>
+                        <span id="toggleUserStatusText">Deactivate</span>
+                    </button>
+                    <button class="btn btn-danger btn-sm" id="deleteUserFromViewBtn">
+                        <i class="fas fa-trash-alt"></i> Delete User
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== EDIT USER MODAL ==================== -->
+    <div class="admin-modal-overlay" id="editUserModal" style="display: none;">
+        <div class="admin-modal">
+            <div class="admin-modal-header">
+                <h2><i class="fas fa-user-edit"></i> Edit User</h2>
+                <button class="admin-modal-close" id="editUserClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="admin-modal-body">
+
+                <form id="editUserForm" class="admin-form">
+
+                    <!-- Hidden ID -->
+                    <input type="hidden" id="editUserId" value="">
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input
+                            type="text"
+                            id="editUserName"
+                            class="form-input"
+                            placeholder="Enter full name"
+                            required
+                        >
+                    </div>
+
+                    <!-- Age & Gender -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-birthday-cake"></i> Age
+                            </label>
+                            <input
+                                type="number"
+                                id="editUserAge"
+                                class="form-input"
+                                placeholder="Age"
+                                min="1"
+                                max="120"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-venus-mars"></i> Gender
+                            </label>
+                            <select id="editUserGender" class="form-input">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Role & Status -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-user-tag"></i> Role
+                            </label>
+                            <select id="editUserRole" class="form-input">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-toggle-on"></i> Status
+                            </label>
+                            <select id="editUserActive" class="form-input">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Form Alert -->
+                    <div class="admin-alert alert-error" id="editUserError" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="editUserErrorMessage"></span>
+                    </div>
+
+                    <div class="admin-alert alert-success" id="editUserSuccess" style="display: none;">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="editUserSuccessMessage"></span>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="admin-modal-footer" style="padding: 0; border: none; margin-top: 8px;">
+                        <button type="button" class="btn btn-outline" id="cancelEditUserBtn">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="saveEditUserBtn">
+                            <span class="btn-text">
+                                <i class="fas fa-save"></i> Save Changes
+                            </span>
+                            <span class="btn-loader" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Saving...
+                            </span>
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== DELETE USER MODAL ==================== -->
+    <div class="admin-modal-overlay" id="deleteUserModal" style="display: none;">
+        <div class="admin-modal admin-modal-small">
+            <div class="admin-modal-header danger-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Delete User</h2>
+                <button class="admin-modal-close" id="deleteUserClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="admin-modal-body">
+                <div class="admin-delete-confirm">
+                    <div class="admin-delete-icon">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <h3>Are you sure?</h3>
+                    <p>You are about to permanently delete <strong id="deleteUserName">this user</strong> and all their data including diagnosis history, uploaded images, and session data. This action cannot be undone.</p>
+
+                    <input type="hidden" id="deleteUserId" value="">
+
+                    <!-- Confirm Email Input -->
+                    <div class="form-group" style="margin-top: 16px; text-align: left;">
+                        <label class="form-label" style="justify-content: center;">
+                            <i class="fas fa-envelope"></i> Type user email to confirm
+                        </label>
+                        <input
+                            type="email"
+                            id="deleteUserConfirmEmail"
+                            class="form-input"
+                            placeholder="Enter user email to confirm"
+                            style="text-align: center;"
+                        >
+                    </div>
+
+                    <div class="admin-delete-confirm-buttons">
+                        <button class="btn btn-outline" id="cancelDeleteUserBtn">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button class="btn btn-danger" id="confirmDeleteUserBtn" disabled>
+                            <span class="btn-text">
+                                <i class="fas fa-trash-alt"></i> Delete Forever
+                            </span>
+                            <span class="btn-loader" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Deleting...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== TOGGLE STATUS MODAL ==================== -->
+    <div class="admin-modal-overlay" id="toggleStatusModal" style="display: none;">
+        <div class="admin-modal admin-modal-small">
+            <div class="admin-modal-header">
+                <h2><i class="fas fa-toggle-on"></i> Change Status</h2>
+                <button class="admin-modal-close" id="toggleStatusClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="admin-modal-body">
+                <div class="admin-delete-confirm">
+                    <div class="admin-delete-icon" id="toggleStatusIcon" style="background: rgba(245, 158, 11, 0.1);">
+                        <i class="fas fa-user-slash" style="color: #f59e0b;"></i>
+                    </div>
+                    <h3 id="toggleStatusTitle">Deactivate User?</h3>
+                    <p id="toggleStatusDescription">This will prevent <strong id="toggleStatusUserName">the user</strong> from logging in and using the platform. You can reactivate them later.</p>
+
+                    <input type="hidden" id="toggleStatusUserId" value="">
+                    <input type="hidden" id="toggleStatusValue" value="">
+
+                    <div class="admin-delete-confirm-buttons">
+                        <button class="btn btn-outline" id="cancelToggleStatusBtn">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button class="btn btn-primary" id="confirmToggleStatusBtn">
+                            <span class="btn-text">
+                                <i class="fas fa-check"></i> <span id="confirmToggleText">Confirm</span>
+                            </span>
+                            <span class="btn-loader" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Processing...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/admin.js"></script>
+
+</body>
+</html>

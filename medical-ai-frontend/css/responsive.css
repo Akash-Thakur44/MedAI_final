@@ -1,0 +1,1270 @@
+/* ============================================
+   RESPONSIVE STYLES - MOBILE FIRST
+   ============================================ */
+
+/* ==================== BREAKPOINTS ====================
+   Mobile Small  : < 480px
+   Mobile        : < 768px
+   Tablet        : < 1024px
+   Desktop Small : < 1280px
+   Desktop       : >= 1280px
+   ===================================================== */
+
+/* ==================== LARGE DESKTOP (1400px+) ==================== */
+@media (max-width: 1400px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ==================== DESKTOP SMALL (1280px) ==================== */
+@media (max-width: 1280px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .hero-title {
+        font-size: 2.6rem;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr 300px;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== TABLET LARGE (1024px) ==================== */
+@media (max-width: 1024px) {
+
+    /* Navbar */
+    .nav-links {
+        display: none;
+    }
+
+    .nav-auth {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    /* Hero */
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-image {
+        display: none;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-stats {
+        justify-content: center;
+    }
+
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    /* Features */
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Steps */
+    .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .step-arrow {
+        transform: rotate(90deg);
+        margin: -8px auto;
+    }
+
+    /* About */
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .about-image {
+        display: none;
+    }
+
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Dashboard Sidebar */
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-close {
+        display: flex;
+    }
+
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Quick Actions */
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Auth Wrapper */
+    .auth-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+    }
+
+    .auth-left {
+        display: none;
+    }
+
+    .auth-right {
+        padding: 40px 36px;
+    }
+
+    /* Admin Sidebar */
+    .admin-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .admin-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .admin-main {
+        margin-left: 0;
+    }
+
+    .admin-toggle-btn {
+        display: flex;
+    }
+
+    /* Admin Stats */
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Results Content */
+    .results-content {
+        padding: 20px;
+    }
+
+    /* Symptom Content */
+    .symptom-content {
+        padding: 20px;
+    }
+}
+
+/* ==================== TABLET (768px) ==================== */
+@media (max-width: 768px) {
+
+    /* Global */
+    .container {
+        padding: 0 16px;
+    }
+
+    /* Navbar */
+    .navbar {
+        padding: 12px 0;
+    }
+
+    .navbar-content {
+        padding: 0 16px;
+    }
+
+    /* Mobile Nav Menu */
+    .mobile-nav-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.95);
+        z-index: 999;
+        padding: 80px 24px 24px;
+        gap: 8px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .mobile-nav-menu.open {
+        transform: translateX(0);
+    }
+
+    .mobile-nav-link {
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        display: block;
+    }
+
+    .mobile-nav-auth {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    /* Hero */
+    .hero {
+        padding: 80px 0 60px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+    }
+
+    .hero-stats {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .hero-badge {
+        font-size: 0.78rem;
+    }
+
+    /* Section Headers */
+    .section-header {
+        margin-bottom: 32px;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    /* Features */
+    .features {
+        padding: 60px 0;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .feature-card {
+        padding: 24px;
+    }
+
+    /* How It Works */
+    .how-it-works {
+        padding: 60px 0;
+    }
+
+    /* About */
+    .about {
+        padding: 60px 0;
+    }
+
+    .about-list {
+        gap: 12px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 48px 0 24px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    /* Footer Mini */
+    .footer-mini .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* Topbar */
+    .topbar {
+        padding: 14px 16px;
+    }
+
+    .topbar-title h1 {
+        font-size: 1.1rem;
+    }
+
+    .topbar-date {
+        display: none;
+    }
+
+    .topbar-user-name {
+        display: none;
+    }
+
+    /* Dashboard Content */
+    .dashboard-content {
+        padding: 16px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-card-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-card-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+
+    /* Quick Actions */
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .quick-action-card {
+        padding: 18px 14px;
+    }
+
+    .quick-action-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+
+    /* Auth */
+    .auth-section {
+        padding: 20px 0;
+        min-height: calc(100vh - 60px);
+    }
+
+    .auth-wrapper {
+        border-radius: 16px;
+        max-width: 100%;
+    }
+
+    .auth-right {
+        padding: 32px 24px;
+    }
+
+    .auth-form-container {
+        max-width: 100%;
+    }
+
+    .auth-form-header h2 {
+        font-size: 1.4rem;
+    }
+
+    /* Register Steps */
+    .register-steps {
+        gap: 0;
+    }
+
+    .step-line {
+        width: 32px;
+    }
+
+    .step-label {
+        font-size: 0.65rem;
+    }
+
+    /* Gender Options */
+    .gender-options {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .gender-card {
+        padding: 10px 6px;
+    }
+
+    .gender-card i {
+        font-size: 1.1rem;
+    }
+
+    .gender-card span {
+        font-size: 0.72rem;
+    }
+
+    /* Password Requirements */
+    .password-requirements {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modals */
+    .modal-overlay {
+        padding: 12px;
+        align-items: flex-end;
+    }
+
+    .modal {
+        border-radius: 20px 20px 0 0;
+        max-height: 85vh;
+    }
+
+    .modal-large {
+        max-width: 100%;
+    }
+
+    .modal-small {
+        max-width: 100%;
+    }
+
+    .modal-header {
+        padding: 18px 20px;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    /* Form Row */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    /* Doctor Filters */
+    .doctor-filters {
+        flex-direction: column;
+    }
+
+    .doctor-filters .form-group {
+        min-width: 100%;
+    }
+
+    /* Symptom Checker */
+    .symptom-content {
+        padding: 16px;
+    }
+
+    .progress-section {
+        padding: 16px;
+    }
+
+    .progress-steps {
+        gap: 0;
+    }
+
+    .progress-label {
+        font-size: 0.68rem;
+    }
+
+    .input-tabs {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .input-tab {
+        flex: 1;
+        min-width: 80px;
+        padding: 10px 8px;
+        font-size: 0.78rem;
+    }
+
+    .input-tab span {
+        display: none;
+    }
+
+    .input-tab i {
+        font-size: 1.1rem;
+    }
+
+    .step-nav-buttons {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .step-nav-buttons .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Voice Section */
+    .voice-button-wrapper {
+        margin: 20px 0;
+    }
+
+    .voice-record-btn {
+        width: 72px;
+        height: 72px;
+        font-size: 1.6rem;
+    }
+
+    /* Image Type Options */
+    .image-type-options {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .image-type-card {
+        padding: 10px 6px;
+    }
+
+    .image-type-card span {
+        font-size: 0.7rem;
+    }
+
+    /* Results */
+    .results-content {
+        padding: 16px;
+    }
+
+    .report-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .precautions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doctors-results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .results-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .results-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Emergency Section */
+    .emergency-contacts {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .emergency-contacts .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Admin */
+    .admin-content {
+        padding: 16px;
+    }
+
+    .admin-topbar {
+        padding: 14px 16px;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .admin-filter-bar {
+        flex-direction: column;
+    }
+
+    .admin-search-wrapper {
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .admin-table-wrapper {
+        border-radius: 12px;
+    }
+
+    .admin-table thead th {
+        font-size: 0.7rem;
+        padding: 12px 10px;
+    }
+
+    .admin-table tbody td {
+        padding: 12px 10px;
+        font-size: 0.82rem;
+    }
+
+    .admin-pagination {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    /* Admin Login */
+    .admin-login-card {
+        padding: 32px 24px;
+        border-radius: 20px;
+    }
+
+    .admin-charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Sidebar Overlay */
+    .sidebar-overlay {
+        display: block;
+    }
+}
+
+/* ==================== MOBILE (480px) ==================== */
+@media (max-width: 480px) {
+
+    /* Global */
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    /* Navbar */
+    .logo span {
+        font-size: 1.2rem;
+    }
+
+    /* Hero */
+    .hero {
+        padding: 70px 0 50px;
+    }
+
+    .hero-title {
+        font-size: 1.7rem;
+        line-height: 1.3;
+    }
+
+    .hero-description {
+        font-size: 0.875rem;
+    }
+
+    .hero-stats {
+        gap: 12px;
+    }
+
+    .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+    }
+
+    .hero-badge {
+        font-size: 0.72rem;
+        padding: 6px 12px;
+    }
+
+    /* Section */
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .section-description {
+        font-size: 0.875rem;
+    }
+
+    .section-badge {
+        font-size: 0.72rem;
+    }
+
+    /* Features */
+    .feature-card {
+        padding: 20px;
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+
+    .feature-title {
+        font-size: 1rem;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .stat-card-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .stat-card-number {
+        font-size: 1.3rem;
+    }
+
+    .stat-card-label {
+        font-size: 0.72rem;
+    }
+
+    /* Quick Actions */
+    .quick-actions-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .quick-action-card {
+        padding: 16px 12px;
+    }
+
+    .quick-action-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    .quick-action-card h3 {
+        font-size: 0.82rem;
+    }
+
+    .quick-action-card p {
+        display: none;
+    }
+
+    /* Auth */
+    .auth-right {
+        padding: 28px 20px;
+    }
+
+    .auth-form-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .form-input {
+        padding: 10px 12px;
+        font-size: 0.875rem;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: 0.875rem;
+    }
+
+    .btn-lg {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Register */
+    .step-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+
+    .step-line {
+        width: 24px;
+    }
+
+    .step-label {
+        font-size: 0.6rem;
+    }
+
+    /* Form Nav Buttons */
+    .form-nav-buttons {
+        gap: 8px;
+    }
+
+    /* Topbar */
+    .topbar {
+        padding: 12px;
+    }
+
+    .topbar-title h1 {
+        font-size: 1rem;
+    }
+
+    .topbar-greeting {
+        display: none;
+    }
+
+    .topbar-right {
+        gap: 8px;
+    }
+
+    /* Symptom Checker Steps */
+    .step-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .step-header p {
+        font-size: 0.8rem;
+    }
+
+    .step-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+
+    .checker-step {
+        padding: 0;
+    }
+
+    .step-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    /* Quick Symptoms Tags */
+    .symptom-tags {
+        gap: 6px;
+    }
+
+    .symptom-tag {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+
+    /* Voice */
+    .voice-record-btn {
+        width: 64px;
+        height: 64px;
+        font-size: 1.4rem;
+    }
+
+    .transcription-box {
+        min-height: 80px;
+    }
+
+    /* Image Upload */
+    .drop-zone {
+        padding: 24px 16px;
+    }
+
+    .drop-zone-icon {
+        font-size: 2rem;
+    }
+
+    .drop-zone h3 {
+        font-size: 1rem;
+    }
+
+    /* Results */
+    .disclaimer-banner {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .severity-gauge {
+        margin: 0 -10px;
+    }
+
+    .diagnosis-card {
+        padding: 18px;
+    }
+
+    .confidence-bar-item {
+        gap: 8px;
+    }
+
+    .confidence-bar-label {
+        font-size: 0.78rem;
+        min-width: 80px;
+    }
+
+    /* Doctor Cards */
+    .doctor-result-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .doctor-result-avatar {
+        margin: 0 auto;
+    }
+
+    .doctor-result-meta {
+        justify-content: center;
+    }
+
+    .doctor-result-actions {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    /* Admin */
+    .admin-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .admin-stat-card {
+        padding: 16px;
+    }
+
+    .admin-stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    .admin-stat-number {
+        font-size: 1.4rem;
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tbody tr {
+        display: block;
+        margin-bottom: 12px;
+        border: 1px solid #f1f5f9;
+        border-radius: 12px;
+        padding: 12px;
+    }
+
+    .admin-table tbody td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 4px;
+        border-bottom: 1px solid #f8fafc;
+    }
+
+    .admin-table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .admin-table tbody td::before {
+        content: attr(data-label);
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex-shrink: 0;
+        margin-right: 12px;
+    }
+
+    /* Admin Login */
+    .admin-login-body {
+        padding: 16px;
+    }
+
+    .admin-login-card {
+        padding: 28px 20px;
+    }
+
+    .admin-login-header h2 {
+        font-size: 1.2rem;
+    }
+
+    /* Modal */
+    .modal-header {
+        padding: 16px 18px;
+    }
+
+    .modal-body {
+        padding: 18px;
+    }
+
+    .admin-modal {
+        border-radius: 20px 20px 0 0;
+    }
+
+    /* History Card */
+    .history-card {
+        padding: 14px;
+    }
+
+    .history-card-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+
+    .history-card-disease {
+        font-size: 0.85rem;
+    }
+
+    /* Notification Panel */
+    .notification-panel {
+        width: 280px;
+        right: 0;
+    }
+
+    /* Disclaimer */
+    .disclaimer-box {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+}
+
+/* ==================== MOBILE EXTRA SMALL (360px) ==================== */
+@media (max-width: 360px) {
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gender-options {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .image-type-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .register-steps {
+        gap: 0;
+    }
+
+    .step-line {
+        width: 16px;
+    }
+
+    .step-label {
+        display: none;
+    }
+
+    .auth-right {
+        padding: 24px 16px;
+    }
+
+    .notification-panel {
+        width: 260px;
+    }
+}
+
+/* ==================== PRINT STYLES ==================== */
+@media print {
+
+    .sidebar,
+    .topbar,
+    .navbar,
+    .footer,
+    .footer-mini,
+    .results-actions,
+    .quick-actions-section,
+    .disclaimer-dismiss,
+    .share-options {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .results-content {
+        padding: 0;
+    }
+
+    body {
+        background: #ffffff;
+        color: #000000;
+        font-size: 12px;
+    }
+
+    .report-header,
+    .severity-section,
+    .diagnosis-section,
+    .precautions-section,
+    .doctors-section {
+        page-break-inside: avoid;
+    }
+
+    .diagnosis-card,
+    .precaution-card,
+    .doctor-result-card {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+    }
+
+    .disclaimer-banner {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #000000;
+    }
+
+    .final-disclaimer {
+        border: 1px solid #e2e8f0;
+        page-break-inside: avoid;
+    }
+
+    a {
+        color: #000000;
+        text-decoration: none;
+    }
+}
+
+/* ==================== DARK MODE (Optional) ==================== */
+@media (prefers-color-scheme: dark) {
+
+    /* Uncomment to enable dark mode
+    :root {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --border-color: #334155;
+        --card-bg: #1e293b;
+    }
+    */
+}
+
+/* ==================== REDUCED MOTION ==================== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .skeleton-card {
+        animation: none;
+        background: #f1f5f9;
+    }
+}
+
+/* ==================== SIDEBAR OVERLAY ==================== */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    z-index: 999;
+    backdrop-filter: blur(2px);
+}
+
+@media (max-width: 1024px) {
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+    .admin-sidebar-overlay.show {
+        display: block;
+    }
+}
+
+/* ==================== TOUCH DEVICE IMPROVEMENTS ==================== */
+@media (hover: none) {
+
+    .btn:hover {
+        transform: none;
+    }
+
+    .stat-card:hover {
+        transform: none;
+    }
+
+    .quick-action-card:hover {
+        transform: none;
+    }
+
+    .feature-card:hover {
+        transform: none;
+    }
+
+    .history-card:hover {
+        transform: none;
+        background: #f8fafc;
+    }
+
+    .sidebar-link:hover {
+        background: none;
+    }
+}

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - MedAI Health Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS Files -->
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">  <!-- ADD THIS -->
+    <link rel="stylesheet" href="css/results.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Sidebar Logo -->
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>Med<span class="logo-highlight">AI</span></span>
+            </a>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Main Menu</span>
+                <ul>
+                    <li>
+                        <a href="dashboard.html" class="sidebar-link">
+                            <i class="fas fa-th-large"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="symptom-checker.html" class="sidebar-link">
+                            <i class="fas fa-stethoscope"></i>
+                            <span>Symptom Checker</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="results.html" class="sidebar-link active">
+                            <i class="fas fa-file-medical-alt"></i>
+                            <span>Results</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Account</span>
+                <ul>
+                    <li>
+                        <a href="dashboard.html" class="sidebar-link">
+                            <i class="fas fa-user-circle"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link logout-link" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+    </aside>
+
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="topbar-title">
+                    <h1>Analysis Results</h1>
+                    <p>AI-powered health analysis report</p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="btn btn-outline btn-sm" id="printResultsBtn">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button class="btn btn-outline btn-sm" id="downloadResultsBtn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <a href="symptom-checker.html" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> New Check
+                </a>
+            </div>
+        </header>
+
+
+        <!-- Results Content -->
+        <div class="results-content">
+
+            <!-- ==================== LOADING STATE ==================== -->
+            <div class="results-loading" id="resultsLoading">
+                <div class="loading-animation">
+                    <div class="loading-circle">
+                        <i class="fas fa-dna fa-spin"></i>
+                    </div>
+                    <h2>Analyzing Your Symptoms</h2>
+                    <p>Our AI is processing your health data...</p>
+                    <div class="loading-steps">
+                        <div class="loading-step active" id="loadStep1">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Receiving symptoms data</span>
+                        </div>
+                        <div class="loading-step" id="loadStep2">
+                            <i class="fas fa-circle"></i>
+                            <span>Analyzing with Gemini AI</span>
+                        </div>
+                        <div class="loading-step" id="loadStep3">
+                            <i class="fas fa-circle"></i>
+                            <span>Detecting severity level</span>
+                        </div>
+                        <div class="loading-step" id="loadStep4">
+                            <i class="fas fa-circle"></i>
+                            <span>Matching specialist doctors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ==================== ERROR STATE ==================== -->
+            <div class="results-error" id="resultsError" style="display: none;">
+                <div class="error-content">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2>Analysis Failed</h2>
+                    <p id="errorMessage">Something went wrong. Please try again.</p>
+                    <div class="error-actions">
+                        <a href="symptom-checker.html" class="btn btn-primary">
+                            <i class="fas fa-redo"></i> Try Again
+                        </a>
+                        <a href="dashboard.html" class="btn btn-outline">
+                            <i class="fas fa-home"></i> Go to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ==================== NO DATA STATE ==================== -->
+            <div class="results-empty" id="resultsEmpty" style="display: none;">
+                <div class="empty-content">
+                    <div class="empty-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h2>No Results Found</h2>
+                    <p>You have not performed any symptom analysis yet. Start a new check to see results.</p>
+                    <a href="symptom-checker.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-stethoscope"></i> Start Symptom Check
+                    </a>
+                </div>
+            </div>
+
+
+            <!-- ==================== RESULTS DATA ==================== -->
+            <div class="results-data" id="resultsData" style="display: none;">
+
+                <!-- ========== DISCLAIMER BANNER ========== -->
+                <div class="disclaimer-banner">
+                    <div class="disclaimer-banner-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="disclaimer-banner-text">
+                        <strong>Medical Disclaimer:</strong> This analysis is AI-generated for
+                        educational purposes only. It is not a medical diagnosis. Always consult
+                        a qualified healthcare professional for proper medical advice.
+                    </div>
+                    <button class="disclaimer-dismiss" id="dismissDisclaimer">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+
+                <!-- ========== REPORT HEADER ========== -->
+                <div class="report-header">
+                    <div class="report-header-left">
+                        <h2><i class="fas fa-file-medical"></i> Health Analysis Report</h2>
+                        <div class="report-meta">
+                            <span class="report-date" id="reportDate">
+                                <i class="fas fa-calendar"></i> --
+                            </span>
+                            <span class="report-id" id="reportId">
+                                <i class="fas fa-hashtag"></i> --
+                            </span>
+                        </div>
+                    </div>
+                    <div class="report-header-right">
+                        <div class="report-patient" id="reportPatient">
+                            <span class="patient-name" id="patientName">--</span>
+                            <span class="patient-info" id="patientInfo">-- years | --</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== SEVERITY SECTION ========== -->
+                <div class="severity-section" id="severitySection">
+
+                    <div class="severity-card" id="severityCard">
+                        <div class="severity-header">
+                            <h3><i class="fas fa-heartbeat"></i> Severity Level</h3>
+                        </div>
+                        <div class="severity-body">
+
+                            <!-- Severity Gauge -->
+                            <div class="severity-gauge">
+                                <div class="gauge-track">
+                                    <div class="gauge-fill" id="gaugeFill"></div>
+                                    <div class="gauge-pointer" id="gaugePointer"></div>
+                                </div>
+                                <div class="gauge-labels">
+                                    <span class="gauge-label label-low">Low</span>
+                                    <span class="gauge-label label-medium">Medium</span>
+                                    <span class="gauge-label label-high">High</span>
+                                    <span class="gauge-label label-critical">Critical</span>
+                                </div>
+                            </div>
+
+                            <!-- Severity Badge -->
+                            <div class="severity-badge-wrapper">
+                                <span class="severity-badge" id="severityBadge">
+                                    Analyzing...
+                                </span>
+                            </div>
+
+                            <!-- Severity Action -->
+                            <div class="severity-action" id="severityAction">
+                                <i class="fas fa-info-circle"></i>
+                                <p id="severityActionText">Loading recommendation...</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- ========== DIAGNOSIS SECTION ========== -->
+                <div class="diagnosis-section">
+                    <h3 class="section-heading">
+                        <i class="fas fa-diagnoses"></i> Probable Conditions
+                    </h3>
+
+                    <!-- Diagnosis Cards Container -->
+                    <div class="diagnosis-cards" id="diagnosisCards">
+                        <!-- Cards will be loaded by JavaScript -->
+                    </div>
+                </div>
+
+
+                <!-- ========== ABOUT THIS CONDITION ========== -->
+                <div class="about-condition-section" id="aboutConditionSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-book-medical"></i> About This Condition
+                    </h3>
+
+                    <div class="about-condition-card">
+                        <div class="about-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="about-content" id="detailedExplanation">
+                            <!-- Detailed explanation will be loaded -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== CAUSES SECTION ========== -->
+                <div class="causes-section" id="causesSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-search-plus"></i> Why Is This Happening?
+                    </h3>
+
+                    <div class="causes-card">
+                        <p class="causes-intro">Understanding the possible causes helps you manage and prevent this condition.</p>
+
+                        <div class="causes-list" id="causesList">
+                            <!-- Causes will be loaded by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== DURATION & RECOVERY ========== -->
+                <div class="duration-section" id="durationSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-clock"></i> Duration & Recovery Timeline
+                    </h3>
+
+                    <div class="duration-grid">
+                        <div class="duration-card">
+                            <div class="duration-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="duration-info">
+                                <span class="duration-label">Typical Duration</span>
+                                <span class="duration-value" id="typicalDuration">--</span>
+                            </div>
+                        </div>
+
+                        <div class="duration-card">
+                            <div class="duration-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="duration-info">
+                                <span class="duration-label">Recovery Time</span>
+                                <span class="duration-value" id="recoveryTime">--</span>
+                            </div>
+                        </div>
+
+                        <div class="duration-card">
+                            <div class="duration-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="duration-info">
+                                <span class="duration-label">Improvement Expected</span>
+                                <span class="duration-value" id="improvementExpected">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="duration-details" id="durationDetails">
+                        <!-- Duration details will be loaded -->
+                    </div>
+                </div>
+
+
+                <!-- ========== WARNING SIGNS ========== -->
+                <div class="warning-signs-section" id="warningSignsSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-exclamation-triangle"></i> When To See A Doctor Immediately
+                    </h3>
+
+                    <div class="warning-card">
+                        <div class="warning-header">
+                            <i class="fas fa-bell"></i>
+                            <h4>Seek Medical Attention If You Experience:</h4>
+                        </div>
+
+                        <div class="warning-list" id="warningSignsList">
+                            <!-- Warning signs will be loaded -->
+                        </div>
+
+                        <div class="warning-footer">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>Emergency: <strong>999</strong> | Health Helpline: <strong>16263</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== HOME REMEDIES ========== -->
+                <div class="remedies-section" id="remediesSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-leaf"></i> Home Remedies & Self-Care
+                    </h3>
+
+                    <div class="remedies-grid" id="remediesGrid">
+                        <!-- Remedies will be loaded -->
+                    </div>
+                </div>
+
+
+                <!-- ========== DIET RECOMMENDATIONS ========== -->
+                <div class="diet-section" id="dietSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-utensils"></i> Diet Recommendations
+                    </h3>
+
+                    <div class="diet-grid">
+                        <!-- Foods to Eat -->
+                        <div class="diet-card diet-eat">
+                            <div class="diet-header">
+                                <i class="fas fa-check-circle"></i>
+                                <h4>Foods To Eat</h4>
+                            </div>
+                            <ul class="diet-list" id="foodsToEat">
+                                <!-- Items loaded by JS -->
+                            </ul>
+                        </div>
+
+                        <!-- Foods to Avoid -->
+                        <div class="diet-card diet-avoid">
+                            <div class="diet-header">
+                                <i class="fas fa-times-circle"></i>
+                                <h4>Foods To Avoid</h4>
+                            </div>
+                            <ul class="diet-list" id="foodsToAvoid">
+                                <!-- Items loaded by JS -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="diet-extra">
+                        <div class="diet-extra-item">
+                            <i class="fas fa-tint"></i>
+                            <div>
+                                <strong>Hydration:</strong>
+                                <span id="hydrationInfo">--</span>
+                            </div>
+                        </div>
+                        <div class="diet-extra-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>Meal Pattern:</strong>
+                                <span id="mealPattern">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== LIFESTYLE CHANGES ========== -->
+                <div class="lifestyle-section" id="lifestyleSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-running"></i> Lifestyle Changes
+                    </h3>
+
+                    <div class="lifestyle-grid">
+                        <div class="lifestyle-card lifestyle-do">
+                            <div class="lifestyle-header">
+                                <i class="fas fa-thumbs-up"></i>
+                                <h4>Activities To Do</h4>
+                            </div>
+                            <ul class="lifestyle-list" id="activitiesToDo">
+                                <!-- Items loaded by JS -->
+                            </ul>
+                        </div>
+
+                        <div class="lifestyle-card lifestyle-dont">
+                            <div class="lifestyle-header">
+                                <i class="fas fa-thumbs-down"></i>
+                                <h4>Activities To Avoid</h4>
+                            </div>
+                            <ul class="lifestyle-list" id="activitiesToAvoid">
+                                <!-- Items loaded by JS -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="lifestyle-extra">
+                        <div class="lifestyle-extra-item">
+                            <i class="fas fa-bed"></i>
+                            <div>
+                                <strong>Sleep:</strong>
+                                <span id="sleepRecommendation">--</span>
+                            </div>
+                        </div>
+                        <div class="lifestyle-extra-item">
+                            <i class="fas fa-dumbbell"></i>
+                            <div>
+                                <strong>Exercise:</strong>
+                                <span id="exerciseRecommendation">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== SYMPTOMS SUMMARY ========== -->
+                <div class="symptoms-summary-section">
+                    <h3 class="section-heading">
+                        <i class="fas fa-list-ul"></i> Your Symptoms Summary
+                    </h3>
+
+                    <div class="symptoms-summary-card">
+
+                        <!-- Text Symptoms -->
+                        <div class="summary-block">
+                            <h4><i class="fas fa-keyboard"></i> Reported Symptoms</h4>
+                            <p class="symptoms-text-display" id="symptomsTextDisplay">--</p>
+                        </div>
+
+                        <!-- Input Method -->
+                        <div class="summary-block">
+                            <h4><i class="fas fa-input"></i> Input Method</h4>
+                            <div class="input-method-badges" id="inputMethodBadges">
+                                <!-- Badges will be loaded by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Uploaded Images -->
+                        <div class="summary-block" id="uploadedImagesBlock" style="display: none;">
+                            <h4><i class="fas fa-images"></i> Uploaded Images</h4>
+                            <div class="uploaded-images-grid" id="uploadedImagesGrid">
+                                <!-- Images will be loaded by JavaScript -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- ========== FAQS SECTION ========== -->
+                <div class="faqs-section" id="faqsSection" style="display: none;">
+                    <h3 class="section-heading">
+                        <i class="fas fa-question-circle"></i> Frequently Asked Questions
+                    </h3>
+
+                    <div class="faqs-container" id="faqsContainer">
+                        <!-- FAQs will be loaded by JavaScript -->
+                    </div>
+                </div>
+
+
+                <!-- ========== PRECAUTIONS SECTION ========== -->
+                <div class="precautions-section">
+                    <h3 class="section-heading">
+                        <i class="fas fa-shield-alt"></i> Recommended Precautions
+                    </h3>
+
+                    <div class="precautions-grid">
+
+                        <!-- Do's -->
+                        <div class="precaution-card precaution-do">
+                            <div class="precaution-header">
+                                <i class="fas fa-check-circle"></i>
+                                <h4>What To Do</h4>
+                            </div>
+                            <ul class="precaution-list" id="dosList">
+                                <!-- Items will be loaded by JavaScript -->
+                            </ul>
+                        </div>
+
+                        <!-- Don'ts -->
+                        <div class="precaution-card precaution-dont">
+                            <div class="precaution-header">
+                                <i class="fas fa-times-circle"></i>
+                                <h4>What To Avoid</h4>
+                            </div>
+                            <ul class="precaution-list" id="dontsList">
+                                <!-- Items will be loaded by JavaScript -->
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- ========== RECOMMENDED DOCTORS ========== -->
+                <div class="doctors-section">
+                    <div class="section-header-row">
+                        <h3 class="section-heading">
+                            <i class="fas fa-user-md"></i> Recommended Doctors
+                        </h3>
+                        <span class="specialist-type" id="specialistType">
+                            Suggested Specialist: --
+                        </span>
+                    </div>
+
+                    <div class="doctors-results-grid" id="doctorsResultsGrid">
+                        <!-- Doctor cards will be loaded by JavaScript -->
+                    </div>
+                </div>
+
+
+                <!-- ========== CONFIDENCE DETAILS ========== -->
+                <div class="confidence-section">
+                    <h3 class="section-heading">
+                        <i class="fas fa-chart-bar"></i> Analysis Confidence
+                    </h3>
+
+                    <div class="confidence-card">
+                        <div class="confidence-bars" id="confidenceBars">
+                            <!-- Bars will be loaded by JavaScript -->
+                        </div>
+                        <div class="confidence-note">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Confidence scores indicate how closely your symptoms match
+                            known conditions in our database. Higher confidence does not
+                            guarantee accuracy. Always consult a medical professional.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== EMERGENCY SECTION ========== -->
+                <div class="emergency-section" id="emergencySection" style="display: none;">
+                    <div class="emergency-card">
+                        <div class="emergency-icon">
+                            <i class="fas fa-ambulance"></i>
+                        </div>
+                        <div class="emergency-content">
+                            <h3>Seek Immediate Medical Attention</h3>
+                            <p>Based on your symptoms, we recommend seeking immediate
+                            medical care. Please contact emergency services or visit
+                            your nearest hospital.</p>
+                            <div class="emergency-contacts">
+                                <a href="tel:999" class="btn btn-danger btn-lg">
+                                    <i class="fas fa-phone"></i> Call Emergency: 999
+                                </a>
+                                <a href="tel:16789" class="btn btn-outline btn-lg">
+                                    <i class="fas fa-phone"></i> Health Helpline: 16789
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ========== ACTION BUTTONS ========== -->
+                <div class="results-actions">
+                    <a href="symptom-checker.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus-circle"></i> New Symptom Check
+                    </a>
+                    <a href="dashboard.html" class="btn btn-outline btn-lg">
+                        <i class="fas fa-th-large"></i> Go to Dashboard
+                    </a>
+                    <button class="btn btn-outline btn-lg" id="shareResultsBtn">
+                        <i class="fas fa-share-alt"></i> Share with Doctor
+                    </button>
+                </div>
+
+
+                <!-- ========== CHAT SECTION (NEW) ========== -->
+                <div class="chat-section" id="chatSection">
+
+                    <div class="chat-header">
+                        <div class="chat-header-left">
+                            <div class="chat-header-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="chat-header-info">
+                                <h3>Ask Follow-up Questions</h3>
+                                <p>Get personalized answers about your condition</p>
+                            </div>
+                        </div>
+                        <div class="chat-header-right">
+
+                            <!-- Language Selector (NEW) -->
+                            <div class="language-selector-wrapper">
+                                <button class="language-selector-btn" id="languageSelectorBtn" title="Change language">
+                                    <span class="language-flag">🇬🇧</span>
+                                    <span class="language-code">EN</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+
+                                <div class="language-dropdown" id="languageDropdown" style="display: none;">
+                                    <div class="language-dropdown-header">
+                                        <i class="fas fa-globe"></i>
+                                        <span>Select Language</span>
+                                    </div>
+
+                                    <button class="language-option active" data-lang="en">
+                                        <span class="lang-flag">🇬🇧</span>
+                                        <div class="lang-info">
+                                            <span class="lang-name">English</span>
+                                            <span class="lang-native">English</span>
+                                        </div>
+                                        <i class="fas fa-check lang-check"></i>
+                                    </button>
+
+                                    <button class="language-option" data-lang="hi">
+                                        <span class="lang-flag">🇮🇳</span>
+                                        <div class="lang-info">
+                                            <span class="lang-name">Hindi</span>
+                                            <span class="lang-native">हिन्दी</span>
+                                        </div>
+                                        <i class="fas fa-check lang-check"></i>
+                                    </button>
+
+                                    <button class="language-option" data-lang="bn">
+                                        <span class="lang-flag">🇧🇩</span>
+                                        <div class="lang-info">
+                                            <span class="lang-name">Bengali</span>
+                                            <span class="lang-native">বাংলা</span>
+                                        </div>
+                                        <i class="fas fa-check lang-check"></i>
+                                    </button>
+
+                                    <button class="language-option" data-lang="hinglish">
+                                        <span class="lang-flag">🇮🇳</span>
+                                        <div class="lang-info">
+                                            <span class="lang-name">Hinglish</span>
+                                            <span class="lang-native">Hindi + English</span>
+                                        </div>
+                                        <i class="fas fa-check lang-check"></i>
+                                    </button>
+
+                                    <button class="language-option" data-lang="benglish">
+                                        <span class="lang-flag">🇧🇩</span>
+                                        <div class="lang-info">
+                                            <span class="lang-name">Benglish</span>
+                                            <span class="lang-native">Bengali + English</span>
+                                        </div>
+                                        <i class="fas fa-check lang-check"></i>
+                                    </button>
+
+                                    <button class="language-option" data-lang="auto">
+                                        <span class="lang-flag">🌐</span>
+                                        <div class="lang-info">
+                                            <span class="lang-name">Auto Detect</span>
+                                            <span class="lang-native">Detect language</span>
+                                        </div>
+                                        <i class="fas fa-check lang-check"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button class="btn-chat-action" id="clearChatBtn" title="Clear chat">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <button class="btn-chat-action" id="toggleChatBtn" title="Minimize">
+                                <i class="fas fa-chevron-up"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="chat-container" id="chatContainer">
+
+                        <!-- Loading State -->
+                        <div class="chat-loading" id="chatLoading" style="display: none;">
+                            <div class="chat-loading-spinner">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            </div>
+                            <p>Loading chat...</p>
+                        </div>
+
+                        <!-- Messages Area -->
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be loaded by JavaScript -->
+                        </div>
+
+                        <!-- Suggested Questions -->
+                        <div class="suggested-questions" id="suggestedQuestions" style="display: none;">
+                            <div class="suggested-title">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Suggested Questions</span>
+                            </div>
+                            <div class="suggested-list" id="suggestedList">
+                                <!-- Suggestions will be loaded -->
+                            </div>
+                        </div>
+
+                        <!-- Typing Indicator -->
+                        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                            <div class="typing-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="typing-bubble">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Chat Input Area -->
+                    <div class="chat-input-area">
+
+                        <!-- Quick Actions -->
+                        <div class="chat-quick-actions" id="chatQuickActions">
+                            <button class="quick-action-btn" data-action="symptoms">
+                                <i class="fas fa-thermometer-half"></i>
+                                <span>My Symptoms</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="remedies">
+                                <i class="fas fa-leaf"></i>
+                                <span>Home Remedies</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="diet">
+                                <i class="fas fa-utensils"></i>
+                                <span>Diet Tips</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="doctor">
+                                <i class="fas fa-user-md"></i>
+                                <span>See Doctor?</span>
+                            </button>
+                        </div>
+
+                        <!-- Input Box -->
+                        <div class="chat-input-wrapper">
+                            <div class="chat-input-container">
+                                <textarea
+                                    id="chatInput"
+                                    class="chat-input"
+                                    placeholder="Ask any question about your condition..."
+                                    rows="1"
+                                    maxlength="1000"
+                                ></textarea>
+
+                                <div class="chat-input-actions">
+    <span class="char-counter">
+        <span id="chatCharCount">0</span>/1000
+    </span>
+
+    <button class="btn-chat-voice" title="Voice input" id="chatVoiceBtn">
+        <i class="fas fa-microphone" id="chatVoiceIcon"></i>
+    </button>
+
+    <button class="btn-attach" title="Web search enabled" id="webSearchToggle">
+        <i class="fas fa-globe"></i>
+    </button>
+
+    <button class="btn-send" id="sendMessageBtn" disabled>
+        <i class="fas fa-paper-plane"></i>
+    </button>
+</div>
+                            </div>
+
+                                <div class="chat-input-info">
+                                    <span class="info-text">
+                                        <i class="fas fa-info-circle"></i>
+                                        Press Enter to send, Shift + Enter for new line
+                                    </span>
+                                    <span class="auto-read-toggle" id="autoReadToggle" title="Auto-read AI responses">
+                                        <i class="fas fa-volume-up"></i>
+                                        Auto-read OFF
+                                    </span>
+                                    <span class="web-search-status" id="webSearchStatus">
+                                        <i class="fas fa-check-circle"></i>
+                                        Web search ON
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========== FINAL DISCLAIMER ========== -->
+                <div class="final-disclaimer">
+                    <div class="final-disclaimer-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="final-disclaimer-text">
+                        <h4>Important Notice</h4>
+                        <p>This AI-generated report is for <strong>educational and informational
+                        purposes only</strong>. It does not constitute medical advice, diagnosis,
+                        or treatment recommendation. The accuracy of AI analysis may vary.
+                        Always seek the guidance of a qualified healthcare provider with any
+                        questions you may have regarding a medical condition. Never disregard
+                        professional medical advice because of information provided by this tool.
+                        If you think you may have a medical emergency, call your doctor or
+                        emergency services immediately.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==================== SHARE MODAL ==================== -->
+    <div class="modal-overlay" id="shareModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-share-alt"></i> Share Results</h2>
+                <button class="modal-close" id="shareModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="share-options">
+
+                    <!-- Copy Link -->
+                    <div class="share-option">
+                        <h4><i class="fas fa-link"></i> Copy Report Link</h4>
+                        <div class="copy-link-wrapper">
+                            <input type="text" id="shareLink" class="form-input" readonly value="">
+                            <button class="btn btn-primary btn-sm" id="copyLinkBtn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="share-option">
+                        <h4><i class="fas fa-envelope"></i> Send via Email</h4>
+                        <div class="form-group">
+                            <input type="email" id="shareEmail" class="form-input" placeholder="Enter doctor's email">
+                        </div>
+                        <button class="btn btn-primary btn-full" id="sendEmailBtn">
+                            <i class="fas fa-paper-plane"></i> Send Report
+                        </button>
+                    </div>
+
+                    <!-- Download PDF -->
+                    <div class="share-option">
+                        <h4><i class="fas fa-file-pdf"></i> Download as PDF</h4>
+                        <button class="btn btn-outline btn-full" id="downloadPdfBtn">
+                            <i class="fas fa-download"></i> Download PDF Report
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Share Alert -->
+                <div class="alert alert-success" id="shareSuccess" style="display: none;">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="shareSuccessMessage">Link copied successfully!</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== IMAGE PREVIEW MODAL ==================== -->
+    <div class="modal-overlay" id="imagePreviewModal" style="display: none;">
+        <div class="modal modal-image">
+            <div class="modal-header">
+                <h2><i class="fas fa-image"></i> Image Preview</h2>
+                <button class="modal-close" id="imagePreviewClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="image-preview-wrapper">
+                    <img src="" alt="Medical Image" id="previewImage">
+                </div>
+                <div class="image-preview-info">
+                    <span class="image-type-badge" id="previewImageType">--</span>
+                    <span class="image-date" id="previewImageDate">--</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/results.js"></script>
+    <script src="js/chat.js"></script>
+
+</body>
+</html>

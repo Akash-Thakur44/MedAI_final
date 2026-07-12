@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - MedAI Health Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body class="dashboard-body">
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Sidebar Logo -->
+      <div class="sidebar-header">
+        <a href="index.html" class="logo">
+          <i class="fas fa-heartbeat"></i>
+          <span>Med<span class="logo-highlight">AI</span></span>
+        </a>
+        <button class="sidebar-close" id="sidebarClose">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Sidebar Navigation -->
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <span class="nav-section-title">Main Menu</span>
+          <ul>
+            <li>
+              <a href="dashboard.html" class="sidebar-link active">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="symptom-checker.html" class="sidebar-link">
+                <i class="fas fa-stethoscope"></i>
+                <span>Symptom Checker</span>
+              </a>
+            </li>
+            <li>
+              <a href="results.html" class="sidebar-link">
+                <i class="fas fa-file-medical-alt"></i>
+                <span>Last Results</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-section-title">Health Records</span>
+          <ul>
+            <li>
+              <a href="#" class="sidebar-link" id="historyLink">
+                <i class="fas fa-history"></i>
+                <span>My History</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="sidebar-link" id="doctorsLink">
+                <i class="fas fa-user-md"></i>
+                <span>My Doctors</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-section-title">Account</span>
+          <ul>
+            <li>
+              <a href="#" class="sidebar-link" id="profileLink">
+                <i class="fas fa-user-circle"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="sidebar-link" id="settingsLink">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="sidebar-link logout-link" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-user" id="sidebarUser">
+          <div class="sidebar-user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="sidebar-user-info">
+            <span class="sidebar-user-name" id="sidebarUserName"
+              >Loading...</span
+            >
+            <span class="sidebar-user-role" id="sidebarUserRole">Patient</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content" id="mainContent">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="topbar-title">
+            <h1>Dashboard</h1>
+            <p class="topbar-greeting" id="greetingText">Welcome back!</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="currentDate">
+            <i class="fas fa-calendar-alt"></i>
+            <span></span>
+          </div>
+          <div class="topbar-notification">
+            <button class="notification-btn" id="notificationBtn">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge" id="notificationBadge">2</span>
+            </button>
+          </div>
+          <div class="topbar-user" id="topbarUser">
+            <div class="topbar-user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <span class="topbar-user-name" id="topbarUserName">User</span>
+            <i class="fas fa-chevron-down"></i>
+
+            <!-- User Dropdown -->
+            <div class="user-dropdown" id="userDropdown">
+              <a href="#" id="dropdownProfile">
+                <i class="fas fa-user-circle"></i> My Profile
+              </a>
+              <a href="#" id="dropdownSettings">
+                <i class="fas fa-cog"></i> Settings
+              </a>
+              <hr />
+              <a href="#" id="dropdownLogout" class="logout-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="dashboard-content">
+        <!-- ==================== STATS CARDS ==================== -->
+        <section class="stats-section">
+          <div class="stats-grid">
+            <!-- Total Checkups -->
+            <div class="stat-card stat-card-blue">
+              <div class="stat-card-icon">
+                <i class="fas fa-stethoscope"></i>
+              </div>
+              <div class="stat-card-info">
+                <span class="stat-card-number" id="totalCheckups">0</span>
+                <span class="stat-card-label">Total Checkups</span>
+              </div>
+            </div>
+
+            <!-- Last Severity -->
+            <div class="stat-card stat-card-green">
+              <div class="stat-card-icon">
+                <i class="fas fa-heartbeat"></i>
+              </div>
+              <div class="stat-card-info">
+                <span class="stat-card-number" id="lastSeverity">N/A</span>
+                <span class="stat-card-label">Last Severity</span>
+              </div>
+            </div>
+
+            <!-- Doctors Consulted -->
+            <div class="stat-card stat-card-purple">
+              <div class="stat-card-icon">
+                <i class="fas fa-user-md"></i>
+              </div>
+              <div class="stat-card-info">
+                <span class="stat-card-number" id="doctorsConsulted">0</span>
+                <span class="stat-card-label">Doctors Recommended</span>
+              </div>
+            </div>
+
+            <!-- Images Analyzed -->
+            <div class="stat-card stat-card-orange">
+              <div class="stat-card-icon">
+                <i class="fas fa-camera-retro"></i>
+              </div>
+              <div class="stat-card-info">
+                <span class="stat-card-number" id="imagesAnalyzed">0</span>
+                <span class="stat-card-label">Images Analyzed</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== QUICK ACTIONS ==================== -->
+        <section class="quick-actions-section">
+          <h2 class="section-heading">
+            <i class="fas fa-bolt"></i> Quick Actions
+          </h2>
+          <div class="quick-actions-grid">
+            <!-- New Symptom Check -->
+            <a
+              href="symptom-checker.html"
+              class="quick-action-card action-primary"
+            >
+              <div class="quick-action-icon">
+                <i class="fas fa-plus-circle"></i>
+              </div>
+              <h3>New Symptom Check</h3>
+              <p>Start a new AI-powered health analysis</p>
+            </a>
+
+            <!-- Voice Input -->
+            <a
+              href="symptom-checker.html#voice"
+              class="quick-action-card action-green"
+            >
+              <div class="quick-action-icon">
+                <i class="fas fa-microphone"></i>
+              </div>
+              <h3>Voice Analysis</h3>
+              <p>Speak your symptoms for quick check</p>
+            </a>
+
+            <!-- Image Upload -->
+            <a
+              href="symptom-checker.html#image"
+              class="quick-action-card action-purple"
+            >
+              <div class="quick-action-icon">
+                <i class="fas fa-camera"></i>
+              </div>
+              <h3>Image Upload</h3>
+              <p>Upload skin, eye, or throat images</p>
+            </a>
+
+            <!-- Find Doctor -->
+            <a
+              href="#"
+              class="quick-action-card action-orange"
+              id="findDoctorBtn"
+            >
+              <div class="quick-action-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <h3>Find Doctor</h3>
+              <p>Search specialists near you</p>
+            </a>
+          </div>
+        </section>
+
+        <!-- ==================== MAIN GRID ==================== -->
+        <div class="dashboard-grid">
+          <!-- ==================== RECENT HISTORY ==================== -->
+          <section class="history-section">
+            <div class="section-header-row">
+              <h2 class="section-heading">
+                <i class="fas fa-history"></i> Recent History
+              </h2>
+              <a href="#" class="view-all-link" id="viewAllHistory">
+                View All <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- History List -->
+            <div class="history-list" id="historyList">
+              <!-- Loading State -->
+              <div class="loading-state" id="historyLoading">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+              </div>
+
+              <!-- Empty State -->
+              <div class="empty-state" id="historyEmpty" style="display: none">
+                <div class="empty-icon">
+                  <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>No History Yet</h3>
+                <p>Start your first symptom check to see results here</p>
+                <a href="symptom-checker.html" class="btn btn-primary btn-sm">
+                  <i class="fas fa-plus"></i> Start Now
+                </a>
+              </div>
+
+              <!-- History Cards Container -->
+              <div class="history-cards" id="historyCards">
+                <!-- Cards will be loaded by JavaScript -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ==================== HEALTH TIPS ==================== -->
+          <section class="tips-section">
+            <h2 class="section-heading">
+              <i class="fas fa-lightbulb"></i> Health Tips
+            </h2>
+
+            <div class="tips-list">
+              <!-- Tip 1 -->
+              <div class="tip-card">
+                <div class="tip-icon tip-icon-blue">
+                  <i class="fas fa-tint"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Stay Hydrated</h4>
+                  <p>
+                    Drink at least 8 glasses of water daily to maintain good
+                    health
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tip 2 -->
+              <div class="tip-card">
+                <div class="tip-icon tip-icon-green">
+                  <i class="fas fa-running"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Exercise Regularly</h4>
+                  <p>
+                    30 minutes of daily exercise can boost immunity and energy
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tip 3 -->
+              <div class="tip-card">
+                <div class="tip-icon tip-icon-purple">
+                  <i class="fas fa-bed"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Sleep Well</h4>
+                  <p>
+                    Get 7-8 hours of quality sleep for better mental and
+                    physical health
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tip 4 -->
+              <div class="tip-card">
+                <div class="tip-icon tip-icon-orange">
+                  <i class="fas fa-apple-alt"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Eat Balanced Diet</h4>
+                  <p>Include fruits, vegetables, and proteins in every meal</p>
+                </div>
+              </div>
+
+              <!-- Tip 5 -->
+              <div class="tip-card">
+                <div class="tip-icon tip-icon-red">
+                  <i class="fas fa-hand-sparkles"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Wash Hands Often</h4>
+                  <p>Regular hand washing prevents 80% of common infections</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ==================== PROFILE MODAL ==================== -->
+        <div class="modal-overlay" id="profileModal" style="display: none">
+          <div class="modal">
+            <div class="modal-header">
+              <h2><i class="fas fa-user-circle"></i> My Profile</h2>
+              <button class="modal-close" id="profileModalClose">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="profileForm" class="profile-form">
+                <div class="profile-avatar-section">
+                  <div class="profile-avatar-big">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <i class="fas fa-user"></i> Full Name
+                    </label>
+                    <input
+                      type="text"
+                      id="profileName"
+                      class="form-input"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <i class="fas fa-envelope"></i> Email
+                    </label>
+                    <input
+                      type="email"
+                      id="profileEmail"
+                      class="form-input"
+                      placeholder="Your email"
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <i class="fas fa-birthday-cake"></i> Age
+                    </label>
+                    <input
+                      type="number"
+                      id="profileAge"
+                      class="form-input"
+                      placeholder="Your age"
+                      min="1"
+                      max="120"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <i class="fas fa-venus-mars"></i> Gender
+                    </label>
+                    <select id="profileGender" class="form-input">
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div
+                  class="alert alert-success"
+                  id="profileSuccess"
+                  style="display: none"
+                >
+                  <i class="fas fa-check-circle"></i>
+                  <span>Profile updated successfully!</span>
+                </div>
+
+                <div
+                  class="alert alert-error"
+                  id="profileError"
+                  style="display: none"
+                >
+                  <i class="fas fa-exclamation-circle"></i>
+                  <span id="profileErrorMessage">Something went wrong</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                  <i class="fas fa-save"></i> Save Changes
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== DOCTORS MODAL ==================== -->
+        <div class="modal-overlay" id="doctorsModal" style="display: none">
+          <div class="modal modal-large">
+            <div class="modal-header">
+              <h2><i class="fas fa-user-md"></i> Find Doctors</h2>
+              <button class="modal-close" id="doctorsModalClose">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- Search Filters -->
+              <div class="doctor-filters">
+                <div class="form-group">
+                  <select id="specialtyFilter" class="form-input">
+                    <option value="">All Specialties</option>
+                    <option value="General Physician">General Physician</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                    <option value="Ophthalmologist">Ophthalmologist</option>
+                    <option value="ENT Specialist">ENT Specialist</option>
+                    <option value="Neurologist">Neurologist</option>
+                    <option value="Cardiologist">Cardiologist</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <select id="locationFilter" class="form-input">
+                    <option value="">All Locations</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Jaipur">Jaipur</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-sm" id="filterDoctorsBtn">
+                  <i class="fas fa-search"></i> Search
+                </button>
+              </div>
+
+              <!-- Doctors List -->
+              <div class="doctors-grid" id="doctorsGrid">
+                <!-- Loading State -->
+                <div class="loading-state" id="doctorsLoading">
+                  <div class="skeleton-card"></div>
+                  <div class="skeleton-card"></div>
+                </div>
+
+                <!-- Doctor Cards Container -->
+                <div id="doctorCards">
+                  <!-- Cards will be loaded by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== SETTINGS MODAL ==================== -->
+        <div class="modal-overlay" id="settingsModal" style="display: none">
+          <div class="modal">
+            <div class="modal-header">
+              <h2><i class="fas fa-cog"></i> Settings</h2>
+              <button class="modal-close" id="settingsModalClose">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- Change Password -->
+              <div class="settings-section">
+                <h3><i class="fas fa-lock"></i> Change Password</h3>
+                <form id="changePasswordForm">
+                  <div class="form-group">
+                    <label class="form-label">Current Password</label>
+                    <input
+                      type="password"
+                      id="currentPassword"
+                      class="form-input"
+                      placeholder="Enter current password"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input
+                      type="password"
+                      id="newPassword"
+                      class="form-input"
+                      placeholder="Enter new password"
+                      required
+                      minlength="6"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      class="form-input"
+                      placeholder="Confirm new password"
+                      required
+                      minlength="6"
+                    />
+                  </div>
+
+                  <div
+                    class="alert alert-success"
+                    id="passwordSuccess"
+                    style="display: none"
+                  >
+                    <i class="fas fa-check-circle"></i>
+                    <span>Password changed successfully!</span>
+                  </div>
+
+                  <div
+                    class="alert alert-error"
+                    id="passwordError"
+                    style="display: none"
+                  >
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="passwordErrorMessage">Error</span>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-key"></i> Update Password
+                  </button>
+                </form>
+              </div>
+
+              <!-- Danger Zone -->
+              <div class="settings-section danger-zone">
+                <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                <p>
+                  Deleting your account will permanently remove all your data
+                  including health history.
+                </p>
+                <button class="btn btn-danger btn-full" id="deleteAccountBtn">
+                  <i class="fas fa-trash-alt"></i> Delete My Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== DELETE CONFIRM MODAL ==================== -->
+        <div
+          class="modal-overlay"
+          id="deleteConfirmModal"
+          style="display: none"
+        >
+          <div class="modal modal-small">
+            <div class="modal-header modal-header-danger">
+              <h2>
+                <i class="fas fa-exclamation-triangle"></i> Confirm Deletion
+              </h2>
+              <button class="modal-close" id="deleteConfirmClose">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="delete-confirm-content">
+                <div class="delete-icon">
+                  <i class="fas fa-trash-alt"></i>
+                </div>
+                <p>
+                  Are you sure you want to delete your account? This action
+                  cannot be undone. All your data will be permanently removed.
+                </p>
+                <div class="form-group">
+                  <label class="form-label">Type your email to confirm:</label>
+                  <input
+                    type="email"
+                    id="deleteConfirmEmail"
+                    class="form-input"
+                    placeholder="Enter your email"
+                  />
+                </div>
+                <div class="delete-confirm-buttons">
+                  <button class="btn btn-outline" id="cancelDeleteBtn">
+                    <i class="fas fa-times"></i> Cancel
+                  </button>
+                  <button class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash-alt"></i> Delete Forever
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== NOTIFICATION PANEL ==================== -->
+        <div
+          class="notification-panel"
+          id="notificationPanel"
+          style="display: none"
+        >
+          <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> Notifications</h3>
+            <button class="mark-all-read" id="markAllRead">
+              Mark all read
+            </button>
+          </div>
+          <div class="notification-list" id="notificationList">
+            <div class="notification-item unread">
+              <div class="notification-icon notif-blue">
+                <i class="fas fa-info-circle"></i>
+              </div>
+              <div class="notification-content">
+                <p>Welcome to MedAI! Start your first health check now.</p>
+                <span class="notification-time">Just now</span>
+              </div>
+            </div>
+
+            <div class="notification-item unread">
+              <div class="notification-icon notif-green">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div class="notification-content">
+                <p>Your account is secured with encryption. Stay safe!</p>
+                <span class="notification-time">1 hour ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+
+<script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        try {
+            // ==================== USER NAME ====================
+            var userData = localStorage.getItem('userData');
+            if (userData) {
+                var user = JSON.parse(userData);
+                var name = user.name || user.email || 'User';
+
+                var topbarName = document.getElementById('topbarUserName');
+                var sidebarName = document.getElementById('sidebarUserName');
+                var greeting = document.getElementById('greetingText');
+
+                if (topbarName) topbarName.textContent = name;
+                if (sidebarName) sidebarName.textContent = name;
+
+                if (greeting) {
+                    var hour = new Date().getHours();
+                    var greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+                    greeting.textContent = greet + ', ' + name.split(' ')[0] + '!';
+                }
+            }
+
+            // ==================== PROFILE MODAL ====================
+            var profileLink = document.getElementById('profileLink');
+            var dropdownProfile = document.getElementById('dropdownProfile');
+            var profileModal = document.getElementById('profileModal');
+            var profileClose = document.getElementById('profileModalClose');
+
+            function openProfile() {
+                if (profileModal) profileModal.style.display = 'flex';
+                if (userData) {
+                    var u = JSON.parse(userData);
+                    var nameInput = document.getElementById('profileName');
+                    var emailInput = document.getElementById('profileEmail');
+                    var ageInput = document.getElementById('profileAge');
+                    var genderInput = document.getElementById('profileGender');
+
+                    if (nameInput) nameInput.value = u.name || '';
+                    if (emailInput) emailInput.value = u.email || '';
+                    if (ageInput) ageInput.value = u.age || '';
+                    if (genderInput) genderInput.value = u.gender || '';
+                }
+            }
+
+            if (profileLink) profileLink.onclick = function(e) { e.preventDefault(); openProfile(); };
+            if (dropdownProfile) dropdownProfile.onclick = function(e) { e.preventDefault(); openProfile(); };
+            if (profileClose) profileClose.onclick = function() { profileModal.style.display = 'none'; };
+
+            // ==================== DOCTORS MODAL ====================
+            var findDoctorBtn = document.getElementById('findDoctorBtn');
+            var doctorsLink = document.getElementById('doctorsLink');
+            var doctorsModal = document.getElementById('doctorsModal');
+            var doctorsClose = document.getElementById('doctorsModalClose');
+
+            function openDoctors() {
+                if (doctorsModal) doctorsModal.style.display = 'flex';
+
+                fetch(CONFIG.API_BASE_URL + '/api/doctors?available=true', {
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('userToken') }
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var container = document.getElementById('doctorCards');
+                    var loading = document.getElementById('doctorsLoading');
+                    if (loading) loading.style.display = 'none';
+
+                    if (container && data.doctors && data.doctors.length > 0) {
+                        container.innerHTML = data.doctors.map(function(doc) {
+                            return '<div class="doctor-card">' +
+                                '<div class="doctor-avatar"><i class="fas fa-user-md"></i></div>' +
+                                '<div class="doctor-info">' +
+                                    '<div class="doctor-name">' + doc.name + '</div>' +
+                                    '<div class="doctor-specialty">' + doc.specialty + '</div>' +
+                                    '<div class="doctor-meta">' +
+                                        '<span><i class="fas fa-map-marker-alt"></i> ' + (doc.location || '--') + '</span>' +
+                                        '<span><i class="fas fa-star"></i> ' + (doc.rating || 'N/A') + '</span>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+                        }).join('');
+                    }
+                });
+            }
+
+            if (findDoctorBtn) findDoctorBtn.onclick = function(e) { e.preventDefault(); openDoctors(); };
+            if (doctorsLink) doctorsLink.onclick = function(e) { e.preventDefault(); openDoctors(); };
+            if (doctorsClose) doctorsClose.onclick = function() { doctorsModal.style.display = 'none'; };
+
+            // ==================== SETTINGS MODAL ====================
+            var settingsLink = document.getElementById('settingsLink');
+            var dropdownSettings = document.getElementById('dropdownSettings');
+            var settingsModal = document.getElementById('settingsModal');
+            var settingsClose = document.getElementById('settingsModalClose');
+
+            if (settingsLink) settingsLink.onclick = function(e) { e.preventDefault(); if (settingsModal) settingsModal.style.display = 'flex'; };
+            if (dropdownSettings) dropdownSettings.onclick = function(e) { e.preventDefault(); if (settingsModal) settingsModal.style.display = 'flex'; };
+            if (settingsClose) settingsClose.onclick = function() { settingsModal.style.display = 'none'; };
+
+            // ==================== USER DROPDOWN ====================
+            var topbarUser = document.getElementById('topbarUser');
+            var userDropdown = document.getElementById('userDropdown');
+
+            if (topbarUser) {
+                topbarUser.onclick = function(e) {
+                    e.stopPropagation();
+                    if (userDropdown) {
+                        userDropdown.style.display = userDropdown.style.display === 'block' ? 'none' : 'block';
+                    }
+                };
+            }
+
+            document.addEventListener('click', function() {
+                if (userDropdown) userDropdown.style.display = 'none';
+            });
+
+            // ==================== LOGOUT ====================
+            var logoutBtns = document.querySelectorAll('#logoutBtn, #dropdownLogout, .logout-link');
+            logoutBtns.forEach(function(btn) {
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('userToken');
+                    localStorage.removeItem('userData');
+                    localStorage.removeItem('latestResults');
+                    window.location.href = 'login.html';
+                };
+            });
+
+            // ==================== LOAD STATS ====================
+            fetch(CONFIG.API_BASE_URL + '/api/symptoms/history?limit=100', {
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('userToken') }
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success && data.history) {
+                    var total = data.history.length;
+                    var totalEl = document.getElementById('totalCheckups');
+                    if (totalEl) totalEl.textContent = total;
+
+                    // Load history cards
+                    var historyLoading = document.getElementById('historyLoading');
+                    var historyEmpty = document.getElementById('historyEmpty');
+                    var historyCards = document.getElementById('historyCards');
+
+                    if (historyLoading) historyLoading.style.display = 'none';
+
+                    if (total === 0) {
+                        if (historyEmpty) historyEmpty.style.display = 'block';
+                    } else {
+                        if (historyEmpty) historyEmpty.style.display = 'none';
+                        if (historyCards) {
+                            historyCards.innerHTML = data.history.slice(0, 5).map(function(item) {
+                                var sev = (item.severity || 'Low').toLowerCase();
+                                return '<div class="history-card" style="cursor:pointer;">' +
+                                    '<div class="history-card-icon severity-' + sev + '"><i class="fas fa-stethoscope"></i></div>' +
+                                    '<div class="history-card-info">' +
+                                        '<div class="history-card-disease">' + (item.primary_disease || 'Analysis') + '</div>' +
+                                        '<div class="history-card-symptoms">' + (item.symptoms_text || '').substring(0, 80) + '</div>' +
+                                        '<div class="history-card-meta">' +
+                                            '<span class="history-severity-badge ' + sev + '">' + (item.severity || 'Low') + '</span>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>';
+                            }).join('');
+                        }
+                    }
+                }
+            })
+            .catch(function(e) {
+                var historyLoading = document.getElementById('historyLoading');
+                var historyEmpty = document.getElementById('historyEmpty');
+                if (historyLoading) historyLoading.style.display = 'none';
+                if (historyEmpty) historyEmpty.style.display = 'block';
+            });
+
+            // ==================== SIDEBAR TOGGLE ====================
+            var sidebarToggle = document.getElementById('sidebarToggle');
+            var sidebar = document.getElementById('sidebar');
+            var sidebarClose2 = document.getElementById('sidebarClose');
+
+            if (sidebarToggle) sidebarToggle.onclick = function() { if (sidebar) sidebar.classList.add('open'); };
+            if (sidebarClose2) sidebarClose2.onclick = function() { if (sidebar) sidebar.classList.remove('open'); };
+
+            // ==================== NOTIFICATION ====================
+            var notifBtn = document.getElementById('notificationBtn');
+            var notifPanel = document.getElementById('notificationPanel');
+
+            if (notifBtn) {
+                notifBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    if (notifPanel) {
+                        notifPanel.style.display = notifPanel.style.display === 'block' ? 'none' : 'block';
+                    }
+                };
+            }
+
+            console.log('Dashboard fully loaded!');
+
+        } catch(e) {
+            console.error('Dashboard load error:', e);
+        }
+    }, 500);
+});
+</script>
+  </body>
+</html>
