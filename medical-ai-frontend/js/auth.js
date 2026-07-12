@@ -6,9 +6,9 @@
 document.addEventListener("DOMContentLoaded", function () {
   const path = window.location.pathname;
 
-  if (path.includes("login.html")) {
+  if (path.includes("login")) {
     initLoginPage();
-  } else if (path.includes("register.html")) {
+  } else if (path.includes("register")) {
     initRegisterPage();
   }
 });

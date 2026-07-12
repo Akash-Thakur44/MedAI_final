@@ -14,7 +14,7 @@ const ResultsState = {
 /* ==================== INIT ==================== */
 document.addEventListener('DOMContentLoaded', function () {
     const path = window.location.pathname;
-    if (path.includes('results.html')) {
+    if (path.includes('results')) {
         initResultsPage();
     }
 });

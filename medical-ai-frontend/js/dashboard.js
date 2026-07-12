@@ -15,7 +15,7 @@ const DashboardState = {
 /* ==================== INIT ==================== */
 document.addEventListener("DOMContentLoaded", function () {
   const path = window.location.pathname;
-  if (path.includes("dashboard.html")) {
+  if (path.includes("dashboard")) {
     initDashboard();
   }
 });
