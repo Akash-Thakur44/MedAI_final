@@ -51,6 +51,13 @@ async function initDashboard() {
   initDashboardModals();
   initQuickActions();
   initNotifications();
+
+  // Hide page loader
+  const loader = document.getElementById('pageLoader');
+  if (loader) {
+    loader.classList.add('loader-fade-out');
+    setTimeout(() => loader.remove(), 300);
+  }
 }
 
 /* ==================== AUTH CHECK ==================== */

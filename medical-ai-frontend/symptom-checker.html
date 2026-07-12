@@ -19,8 +19,70 @@
     <link rel="stylesheet" href="css/dashboard.css">  <!-- ADD THIS -->
     <link rel="stylesheet" href="css/symptom.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <!-- Page Loader Styling -->
+    <style>
+      #pageLoader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #0f172a;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      .loader-content {
+        text-align: center;
+      }
+      .loader-icon {
+        color: #3b82f6;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        animation: loaderPulse 1.5s infinite ease-in-out;
+      }
+      .loader-text {
+        color: #f8fafc;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+      }
+      .loader-bar {
+        width: 40px;
+        height: 3px;
+        background: #3b82f6;
+        margin: 12px auto 0;
+        border-radius: 2px;
+        animation: loaderExpand 1.5s infinite ease-in-out;
+      }
+      @keyframes loaderPulse {
+        0%, 100% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.15); opacity: 1; }
+      }
+      @keyframes loaderExpand {
+        0%, 100% { width: 10px; }
+        50% { width: 40px; }
+      }
+      .loader-fade-out {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+    </style>
 </head>
 <body class="dashboard-body">
+    <!-- Page Loader -->
+    <div id="pageLoader">
+      <div class="loader-content">
+        <div class="loader-icon">
+          <i class="fas fa-heartbeat"></i>
+        </div>
+        <div class="loader-text">Med<span style="color: #3b82f6;">AI</span></div>
+        <div class="loader-bar"></div>
+      </div>
+    </div>
 
     <!-- ==================== SIDEBAR ==================== -->
     <aside class="sidebar" id="sidebar">
@@ -1015,6 +1077,13 @@ window.addEventListener('load', function() {
 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             };
+        }
+
+        // Hide page loader
+        const loader = document.getElementById('pageLoader');
+        if (loader) {
+            loader.classList.add('loader-fade-out');
+            setTimeout(() => loader.remove(), 300);
         }
 
         console.log('Symptom checker fully loaded!');

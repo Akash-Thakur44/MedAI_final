@@ -29,6 +29,13 @@ async function initResultsPage() {
     startLoadingAnimation();
 
     await loadResultsData();
+
+    // Hide page loader
+    const loader = document.getElementById('pageLoader');
+    if (loader) {
+        loader.classList.add('loader-fade-out');
+        setTimeout(() => loader.remove(), 300);
+    }
 }
 
 

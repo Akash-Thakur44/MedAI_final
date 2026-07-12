@@ -279,7 +279,7 @@ def register_health_routes(app):
             if not api_key:
                 raise Exception('Gemini API key not found')
 
-            genai.configure(api_key=api_key)
+            genai.configure(api_key=api_key, transport="rest")
 
             return jsonify({
                 'success': True,

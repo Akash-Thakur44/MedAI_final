@@ -65,9 +65,8 @@ class GeminiService:
 
         if not api_key:
             raise Exception('GEMINI_API_KEY not configured')
-
         try:
-            genai.configure(api_key=api_key)
+            genai.configure(api_key=api_key, transport="rest")
             return True
 
         except Exception as e:

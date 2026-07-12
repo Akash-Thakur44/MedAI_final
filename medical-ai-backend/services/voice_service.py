@@ -53,7 +53,7 @@ class VoiceService:
                     "error": "GEMINI_API_KEY is not set"
                 }
             
-            genai.configure(api_key=api_key)
+            genai.configure(api_key=api_key, transport="rest")
 
             # Determine mime type from extension
             ext = os.path.splitext(audio_path)[1].lower()
