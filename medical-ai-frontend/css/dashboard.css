@@ -277,7 +277,7 @@
 }
 
 .topbar-notification {
-    position: relative;
+    position: relative !important;
 }
 
 /* Notification Button */
@@ -1265,9 +1265,9 @@
 
 /* ==================== NOTIFICATION PANEL ==================== */
 .notification-panel {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 16px;

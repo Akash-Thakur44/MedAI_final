@@ -607,9 +607,13 @@ function addMessageToUI(message, animate = true) {
     if (role === 'assistant' && content.length > 10) {
         speakBtnHTML = `
             <div class="chat-voice-controls" data-text="${escapeForAttr(content)}">
-                <button class="btn-speak" onclick="speakMessage(this, '${escapeForAttr(content)}')" title="Listen to this message">
+                <button class="btn-speak btn-speak-main" onclick="speakMessage(this, '${escapeForAttr(content)}')" title="Listen to this message">
                     <i class="fas fa-volume-up"></i>
                     <span>Listen</span>
+                </button>
+                <button class="btn-speak btn-speak-pause" onclick="togglePauseSpeak(this)" style="display: none;" title="Pause speaking">
+                    <i class="fas fa-pause"></i>
+                    <span>Pause</span>
                 </button>
             </div>
         `;
@@ -634,7 +638,7 @@ function addMessageToUI(message, animate = true) {
     // Auto-read if enabled
     if (animate && role === 'assistant' && ChatState.autoReadEnabled && content.length > 10) {
         setTimeout(() => {
-            const lastControls = messagesContainer.lastElementChild?.querySelector('.btn-speak');
+            const lastControls = messagesContainer.lastElementChild?.querySelector('.btn-speak-main');
             if (lastControls) {
                 speakMessage(lastControls, escapeForAttr(content));
             } else {
@@ -1315,40 +1319,27 @@ function stopSpeaking() {
     resetAllSpeakButtons();
 }
 
-function togglePauseSpeak() {
+function togglePauseSpeak(buttonEl) {
     if (!ChatState.currentAudio) return;
-
-    const pauseResumeBtns = document.querySelectorAll('.btn-speak-pause-resume');
-    const soundWaves = document.querySelectorAll('.sound-wave');
 
     if (ChatState.isPaused) {
         // Resume playing
         ChatState.currentAudio.play();
         ChatState.isPaused = false;
         
-        pauseResumeBtns.forEach(btn => {
-            btn.innerHTML = `
-                <i class="fas fa-pause"></i>
-                <span>Pause</span>
-            `;
-        });
-        soundWaves.forEach(wave => {
-            wave.classList.remove('paused');
-        });
+        buttonEl.innerHTML = `
+            <i class="fas fa-pause"></i>
+            <span>Pause</span>
+        `;
     } else {
         // Pause playing
         ChatState.currentAudio.pause();
         ChatState.isPaused = true;
 
-        pauseResumeBtns.forEach(btn => {
-            btn.innerHTML = `
-                <i class="fas fa-play"></i>
-                <span>Resume</span>
-            `;
-        });
-        soundWaves.forEach(wave => {
-            wave.classList.add('paused');
-        });
+        buttonEl.innerHTML = `
+            <i class="fas fa-play"></i>
+            <span>Resume</span>
+        `;
     }
 }
 
@@ -1360,32 +1351,36 @@ function speakMessage(buttonEl, encodedText) {
 
     const text = decodeFromAttr(encodedText);
 
-    // If already speaking or paused, stop it
-    if (ChatState.isSpeaking || ChatState.isPaused) {
+    // If this button is currently a Stop button, clicking it stops the voice output
+    if (buttonEl.classList.contains('speaking')) {
         stopSpeaking();
+        return;
     }
 
+    // Stop any other active voice playback first
+    stopSpeaking();
+
+    // Reset all speak buttons to initial state
     resetAllSpeakButtons();
     
+    // Turn this button into a Stop button
+    buttonEl.classList.add('speaking');
+    buttonEl.innerHTML = `
+        <i class="fas fa-stop"></i>
+        <span>Stop</span>
+    `;
+
+    // Show the pause button next to it
     const wrapper = buttonEl.parentElement;
     if (wrapper) {
-        wrapper.innerHTML = `
-            <button class="btn-speak speaking btn-speak-pause-resume" onclick="togglePauseSpeak()" title="Pause/Resume speaking">
+        const pauseBtn = wrapper.querySelector('.btn-speak-pause');
+        if (pauseBtn) {
+            pauseBtn.style.display = 'inline-flex';
+            pauseBtn.innerHTML = `
                 <i class="fas fa-pause"></i>
                 <span>Pause</span>
-            </button>
-            <button class="btn-speak speaking btn-speak-stop" onclick="stopSpeaking()" title="Stop speaking">
-                <i class="fas fa-stop"></i>
-                <span>Stop</span>
-            </button>
-            <div class="sound-wave">
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-            </div>
-        `;
+            `;
+        }
     }
 
     ChatState.isSpeaking = true;
@@ -1403,13 +1398,22 @@ function speakMessage(buttonEl, encodedText) {
 
 function resetAllSpeakButtons() {
     document.querySelectorAll('.chat-voice-controls').forEach(wrapper => {
-        const text = wrapper.getAttribute('data-text') || '';
-        wrapper.innerHTML = `
-            <button class="btn-speak" onclick="speakMessage(this, '${text}')" title="Listen to this message">
+        const mainBtn = wrapper.querySelector('.btn-speak-main');
+        if (mainBtn) {
+            mainBtn.classList.remove('speaking');
+            mainBtn.innerHTML = `
                 <i class="fas fa-volume-up"></i>
                 <span>Listen</span>
-            </button>
-        `;
+            `;
+        }
+        const pauseBtn = wrapper.querySelector('.btn-speak-pause');
+        if (pauseBtn) {
+            pauseBtn.style.display = 'none';
+            pauseBtn.innerHTML = `
+                <i class="fas fa-pause"></i>
+                <span>Pause</span>
+            `;
+        }
     });
 }
 
