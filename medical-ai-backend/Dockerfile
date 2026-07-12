@@ -40,5 +40,5 @@ COPY . .
 # Expose port
 EXPOSE 5000
 
-# Start app using Gunicorn
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000", "--workers", "2", "--threads", "4", "--timeout", "120"]
+# Start app using Gunicorn and dynamically bind to $PORT env var
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120"]
