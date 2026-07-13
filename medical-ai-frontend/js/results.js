@@ -153,8 +153,6 @@ function startLoadingAnimation() {
 
 /* ==================== LOAD RESULTS ==================== */
 async function loadResultsData() {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
     try {
         const storedResults = localStorage.getItem(CONFIG.RESULTS_KEY);
 

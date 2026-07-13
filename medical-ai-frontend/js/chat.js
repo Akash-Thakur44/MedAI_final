@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const path = window.location.pathname;
 
     if (path.includes('results')) {
-        setTimeout(initChat, 4500);
+        setTimeout(initChat, 300);
     }
 });
 

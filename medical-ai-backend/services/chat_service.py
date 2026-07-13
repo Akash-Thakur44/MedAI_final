@@ -577,14 +577,22 @@ class ChatService:
             "Always recommend professional medical consultation for serious concerns."
         )
 
-        # Add diagnosis context
+        # CRITICAL: Always inject the diagnosis context at the top so the AI
+        # never has to guess what condition the patient is asking about.
+        primary_disease = ''
         if diagnosis_context:
-            prompt_parts.append("\n=== PATIENT'S CONDITION ===")
+            primary_disease = diagnosis_context.get('primary_disease', '') or ''
 
-            if diagnosis_context.get('primary_disease'):
-                prompt_parts.append(
-                    f"Initial Assessment: {diagnosis_context['primary_disease']}"
-                )
+        prompt_parts.append("\n=== PATIENT'S MEDICAL CONTEXT (CRITICAL - YOU MUST REFER TO THIS) ===")
+
+        if primary_disease:
+            prompt_parts.append(
+                f"The patient was previously assessed as having: {primary_disease}"
+            )
+            prompt_parts.append(
+                "ALL subsequent questions from this patient are about THIS condition. "
+                "Do NOT ask what condition they have - it is already stated above."
+            )
 
             if diagnosis_context.get('severity'):
                 prompt_parts.append(
@@ -596,6 +604,11 @@ class ChatService:
                     f"Original Symptoms: {diagnosis_context['symptoms_text']}"
                 )
 
+            if diagnosis_context.get('description'):
+                prompt_parts.append(
+                    f"Condition Description: {diagnosis_context['description']}"
+                )
+
             if diagnosis_context.get('age'):
                 prompt_parts.append(
                     f"Patient Age: {diagnosis_context['age']} years"
@@ -605,6 +618,11 @@ class ChatService:
                 prompt_parts.append(
                     f"Patient Gender: {diagnosis_context['gender']}"
                 )
+        else:
+            prompt_parts.append(
+                "No prior diagnosis context is available for this session. "
+                "The patient may be asking a general health question."
+            )
 
         # Add web search context
         if web_context:
@@ -616,25 +634,31 @@ class ChatService:
         if conversation_history and len(conversation_history) > 0:
             prompt_parts.append("\n=== PREVIOUS CONVERSATION ===")
 
-            for msg in conversation_history[-6:]:  # Last 6 messages
+            for msg in conversation_history[-8:]:  # Last 8 messages for more context
                 role = msg.get('role', 'user')
                 content = msg.get('content', '')
 
                 if role == 'user':
                     prompt_parts.append(f"\nPatient: {content}")
                 elif role == 'assistant':
-                    prompt_parts.append(f"\nAssistant: {content[:300]}...")
+                    prompt_parts.append(f"\nAssistant: {content}")
 
-        # Current question
+        # Current question - restate the condition to reinforce context
         prompt_parts.append("\n=== CURRENT QUESTION ===")
-        prompt_parts.append(f"Patient: {user_question}")
+        if primary_disease:
+            prompt_parts.append(
+                f"The patient was diagnosed with {primary_disease} and now asks: "
+                f"{user_question}"
+            )
+        else:
+            prompt_parts.append(f"Patient: {user_question}")
 
         # Instructions
         prompt_parts.append(
             "\n=== INSTRUCTIONS ==="
             "\nProvide a helpful response that:"
-            "\n1. Directly answers the patient's question"
-            "\n2. Uses the medical context provided"
+            "\n1. Directly answers the patient's question about their condition"
+            "\n2. ALWAYS reference the patient's diagnosed condition in your response"
             "\n3. References web information when relevant"
             "\n4. Is empathetic and clear"
             "\n5. Recommends professional consultation when needed"

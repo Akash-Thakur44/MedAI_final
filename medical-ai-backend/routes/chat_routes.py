@@ -15,6 +15,7 @@ from services.web_search_service import WebSearchService
 from services.scraper_service import ScraperService
 from services.content_cleaner import ContentCleaner
 from services.gemini_service import GeminiService
+from models.database import get_admin_supabase
 
 
 # ============================================
@@ -243,7 +244,26 @@ def send_message():
         diagnosis_context = None
 
         if diagnosis_id:
-            diagnosis_context = ChatService.get_diagnosis_context(diagnosis_id)
+            try:
+                diagnosis_context = ChatService.get_diagnosis_context(diagnosis_id)
+            except Exception as e:
+                print(f"[DIAGNOSIS CONTEXT ERROR] {str(e)}")
+
+        # Fallback: if no diagnosis context, try to get symptoms from symptom_log_id
+        if not diagnosis_context:
+            symptom_log_id = session.get('symptom_log_id')
+            if symptom_log_id:
+                try:
+                    supabase = get_admin_supabase()
+                    symp_resp = supabase.table('symptoms_log').select(
+                        'symptoms_text'
+                    ).eq('id', str(symptom_log_id)).execute()
+                    if symp_resp.data and len(symp_resp.data) > 0:
+                        diagnosis_context = {
+                            'symptoms_text': symp_resp.data[0].get('symptoms_text', '')
+                        }
+                except Exception as e:
+                    print(f"[SYMPTOM LOG FALLBACK ERROR] {str(e)}")
 
         # Get conversation history
         conversation_history = ChatService.get_conversation_context(
