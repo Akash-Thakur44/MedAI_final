@@ -34,16 +34,56 @@ def get_voice(language: str) -> str:
     
     return VOICE_MAP["en"]
 
+CHUNK_SIZE = 1500
+
+def split_text_into_chunks(text, max_length=CHUNK_SIZE):
+    if len(text) <= max_length:
+        return [text]
+    chunks = []
+    remaining = text
+    while remaining:
+        if len(remaining) <= max_length:
+            chunks.append(remaining)
+            break
+        chunk = remaining[:max_length]
+        last_para = chunk.rfind('\n\n')
+        if last_para > max_length * 0.3:
+            chunks.append(remaining[:last_para].strip())
+            remaining = remaining[last_para:].strip()
+            continue
+        last_newline = chunk.rfind('\n')
+        if last_newline > max_length * 0.3:
+            chunks.append(remaining[:last_newline].strip())
+            remaining = remaining[last_newline:].strip()
+            continue
+        last_period = chunk.rfind('. ')
+        last_excl = chunk.rfind('! ')
+        last_ques = chunk.rfind('? ')
+        last_sent = max(last_period, last_excl, last_ques)
+        if last_sent > max_length * 0.3:
+            chunks.append(remaining[:last_sent + 1].strip())
+            remaining = remaining[last_sent + 1:].strip()
+            continue
+        last_comma = chunk.rfind(', ')
+        if last_comma > max_length * 0.3:
+            chunks.append(remaining[:last_comma + 1].strip())
+            remaining = remaining[last_comma + 1:].strip()
+            continue
+        last_space = chunk.rfind(' ')
+        if last_space > max_length * 0.3:
+            chunks.append(remaining[:last_space].strip())
+            remaining = remaining[last_space:].strip()
+            continue
+        chunks.append(remaining[:max_length].strip())
+        remaining = remaining[max_length:].strip()
+    return [c for c in chunks if c]
+
+
 class VoiceService:
 
     @staticmethod
     def transcribe(audio_path):
-        """
-        Transcribe audio file using Google Gemini API.
-        This provides high accuracy and support for multiple languages without heavy local models.
-        """
         try:
-            # Initialize Gemini API key
             api_key = os.getenv('GEMINI_API_KEY')
             if not api_key:
                 return {
@@ -52,10 +92,9 @@ class VoiceService:
                     "language": "en",
                     "error": "GEMINI_API_KEY is not set"
                 }
-            
+
             genai.configure(api_key=api_key, transport="rest")
 
-            # Determine mime type from extension
             ext = os.path.splitext(audio_path)[1].lower()
             mime_type = "audio/webm"
             if ext == ".wav":
@@ -67,7 +106,6 @@ class VoiceService:
             elif ext == ".ogg":
                 mime_type = "audio/ogg"
 
-            # Read audio file bytes
             with open(audio_path, 'rb') as f:
                 audio_bytes = f.read()
 
@@ -99,32 +137,111 @@ class VoiceService:
 
     @staticmethod
     def synthesize(text, language="en"):
-        """
-        Synthesize text into speech using edge-tts.
-        Outputs an MP3 file with high quality and low latency.
-        """
         if not text or not text.strip():
             return None
 
-        # Clean text slightly (e.g. limit length to prevent timeout)
-        text = text[:800].strip()
+        text = text.strip()
+        voice = get_voice(language)
+
+        if len(text) <= CHUNK_SIZE:
+            return VoiceService._synthesize_chunk(text, voice)
+
+        chunks = split_text_into_chunks(text)
+        print(f"[TTS] Split {len(text)} chars into {len(chunks)} chunks")
+
+        chunk_paths = []
+        for i, chunk in enumerate(chunks):
+            path = VoiceService._synthesize_chunk(chunk, voice)
+            if path:
+                chunk_paths.append(path)
+            else:
+                print(f"[TTS] Failed to synthesize chunk {i+1}/{len(chunks)}")
+
+        if not chunk_paths:
+            return None
+
+        if len(chunk_paths) == 1:
+            return chunk_paths[0]
+
+        final_path = os.path.join(TEMP_DIR, f"{uuid.uuid4()}.mp3")
+        success = VoiceService._concatenate_audio(chunk_paths, final_path)
+
+        for cp in chunk_paths:
+            try:
+                os.remove(cp)
+            except OSError:
+                pass
+
+        if success:
+            return final_path
+        else:
+            return chunk_paths[-1] if chunk_paths else None
+
+    @staticmethod
+    def _synthesize_chunk(text, voice):
+        text = text[:CHUNK_SIZE].strip()
+        if not text:
+            return None
 
         file_name = f"{uuid.uuid4()}.mp3"
         output_path = os.path.join(TEMP_DIR, file_name)
-
-        voice = get_voice(language)
 
         async def run_tts():
             communicate = edge_tts.Communicate(text, voice)
             await communicate.save(output_path)
 
         try:
-            # Run the async text-to-speech task in a new event loop
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             loop.run_until_complete(run_tts())
             loop.close()
-            return output_path
-        except Exception as e:
-            print(f"[TTS SYNTHESIS ERROR] {str(e)}")
+
+            if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+                return output_path
             return None
+        except Exception as e:
+            print(f"[TTS CHUNK ERROR] {str(e)}")
+            return None
+
+    @staticmethod
+    def _concatenate_audio(audio_paths, output_path):
+        if not audio_paths:
+            return False
+
+        try:
+            import subprocess
+            list_file = os.path.join(TEMP_DIR, f"concat_{uuid.uuid4()}.txt")
+            with open(list_file, 'w') as f:
+                for path in audio_paths:
+                    safe_path = path.replace('\\', '/')
+                    f.write(f"file '{safe_path}'\n")
+
+            result = subprocess.run(
+                [
+                    'ffmpeg', '-y', '-f', 'concat', '-safe', '0',
+                    '-i', list_file, '-c', 'copy', output_path
+                ],
+                capture_output=True,
+                timeout=60
+            )
+
+            try:
+                os.remove(list_file)
+            except OSError:
+                pass
+
+            if result.returncode == 0 and os.path.exists(output_path):
+                return True
+
+        except (FileNotFoundError, subprocess.TimeoutExpired):
+            pass
+
+        try:
+            with open(output_path, 'wb') as outfile:
+                for path in audio_paths:
+                    with open(path, 'rb') as infile:
+                        outfile.write(infile.read())
+            return os.path.exists(output_path) and os.path.getsize(output_path) > 0
+        except Exception as e:
+            print(f"[AUDIO CONCAT ERROR] {str(e)}")
+            return False

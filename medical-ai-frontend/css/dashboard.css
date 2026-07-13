@@ -829,6 +829,34 @@
     color: #dc2626;
 }
 
+/* History Delete Button */
+.history-delete-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    opacity: 0;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.history-card:hover .history-delete-btn {
+    opacity: 1;
+}
+
+.history-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.history-delete-btn:active {
+    transform: scale(0.95);
+}
+
 /* Skeleton Loading */
 .skeleton-card {
     background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);

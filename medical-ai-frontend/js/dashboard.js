@@ -365,8 +365,46 @@ function createHistoryCard(item) {
                     </span>
                 </div>
             </div>
+            <button class="history-delete-btn" data-log-id="${item.id}" title="Delete this record" onclick="event.stopPropagation(); deleteHistoryItem('${item.id}');">
+                <i class="fas fa-trash-alt"></i>
+            </button>
         </div>
     `;
+}
+
+async function deleteHistoryItem(logId) {
+  if (!logId) return;
+
+  const confirmed = confirm("Are you sure you want to delete this history record? This action cannot be undone.");
+  if (!confirmed) return;
+
+  try {
+    const response = await API.symptoms.deleteHistory(logId);
+
+    if (response && response.success) {
+      const card = document.querySelector(`.history-card[data-log-id="${logId}"]`);
+      if (card) {
+        card.style.transition = "opacity 0.3s, transform 0.3s";
+        card.style.opacity = "0";
+        card.style.transform = "translateX(-20px)";
+        setTimeout(() => {
+          card.remove();
+          const cardsContainer = document.getElementById("historyCards");
+          const emptyEl = document.getElementById("historyEmpty");
+          if (cardsContainer && cardsContainer.children.length === 0) {
+            if (emptyEl) emptyEl.style.display = "block";
+          }
+        }, 300);
+      }
+
+      loadDashboardStats();
+    } else {
+      alert(response?.message || "Failed to delete history");
+    }
+  } catch (error) {
+    console.error("Delete history error:", error);
+    alert("Failed to delete history. Please try again.");
+  }
 }
 
 async function viewHistoryDetail(logId) {
@@ -899,6 +937,9 @@ function initNotifications() {
     });
   }
 }
+
+/* ==================== EXPORT FOR GLOBAL ACCESS ==================== */
+window.deleteHistoryItem = deleteHistoryItem;
 
 /* ==================== HELPERS ==================== */
 function formatDashboardDate(dateStr) {
