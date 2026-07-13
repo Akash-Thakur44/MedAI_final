@@ -131,6 +131,16 @@ async function initChat() {
         ChatState.diagnosisId = results.diagnosis_id || null;
         ChatState.symptomLogId = results.log_id || null;
 
+        ChatState.diagnosisFallback = null;
+        if (results.diagnosis) {
+            ChatState.diagnosisFallback = {
+                primary_disease: results.diagnosis.primary_disease || '',
+                severity: results.diagnosis.severity || '',
+                symptoms_text: results.symptoms_text || '',
+                description: results.diagnosis.description || ''
+            };
+        }
+
         // Setup event listeners
         setupChatEventListeners();
 
@@ -380,7 +390,8 @@ async function initializeChatSession() {
             },
             body: JSON.stringify({
                 diagnosis_id: ChatState.diagnosisId,
-                symptom_log_id: ChatState.symptomLogId
+                symptom_log_id: ChatState.symptomLogId,
+                diagnosis_context: ChatState.diagnosisFallback
             })
         });
 
@@ -1256,6 +1267,8 @@ async function speakText(text) {
             ChatState.currentAudio = null;
         }
 
+        const voiceText = stripMarkdown(text);
+
         const response = await fetch(
             `${CONFIG.API_BASE_URL}/api/voice/speak`,
             {
@@ -1264,7 +1277,7 @@ async function speakText(text) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    text,
+                    text: voiceText,
                     language: ChatState.currentLanguage
                 })
             }
@@ -1452,6 +1465,28 @@ function decodeFromAttr(encoded) {
     } catch (e) {
         return '';
     }
+}
+
+
+/* ==================== STRIP MARKDOWN FOR TTS ==================== */
+function stripMarkdown(text) {
+    if (!text) return '';
+
+    let clean = text
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/~~(.*?)~~/g, '$1')
+        .replace(/```[\s\S]*?```/g, '')
+        .replace(/#{1,6}\s/g, '')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+        .replace(/>\s/g, '')
+        .replace(/---+/g, '. ')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+
+    return clean;
 }
 
 

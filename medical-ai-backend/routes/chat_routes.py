@@ -89,8 +89,14 @@ def create_or_get_session():
         if diagnosis_id:
             diagnosis_context = ChatService.get_diagnosis_context(diagnosis_id)
 
-            if diagnosis_context and diagnosis_context.get('primary_disease'):
-                title = f"Chat: {diagnosis_context['primary_disease']}"
+        # Fallback: use diagnosis context sent from frontend
+        if not diagnosis_context or not diagnosis_context.get('primary_disease'):
+            frontend_context = data.get('diagnosis_context')
+            if frontend_context and frontend_context.get('primary_disease'):
+                diagnosis_context = frontend_context
+
+        if diagnosis_context and diagnosis_context.get('primary_disease'):
+            title = f"Chat: {diagnosis_context['primary_disease']}"
 
         new_session = ChatService.create_session(
             user_id=user_id,

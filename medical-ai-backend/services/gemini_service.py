@@ -32,7 +32,7 @@ class GeminiService:
     DEFAULT_TIMEOUT = 90
 
     CHAT_TEMPERATURE = 0.8
-    CHAT_MAX_TOKENS = 2048
+    CHAT_MAX_TOKENS = 4096
 
     SAFETY_SETTINGS = [
         {
