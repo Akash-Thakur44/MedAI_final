@@ -73,11 +73,40 @@ def generate_unique_filename(user_id, original_filename, image_type='other'):
     timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
     unique_id = str(uuid.uuid4())[:8]
 
-    user_part = str(user_id)[:8] if user_id else 'anonymous'
+    user_part = str(user_id) if user_id else 'anonymous'
 
     filename = f"{image_type}/{user_part}_{timestamp}_{unique_id}.{extension}"
 
     return filename
+
+
+def user_owns_image(file_path):
+    """Check that a non-admin user owns this stored image."""
+    normalized_path = StorageDB.normalize_file_path(file_path)
+    if not normalized_path:
+        return False
+
+    if g.current_user_role == 'admin':
+        return True
+
+    user_id = str(g.current_user_id)
+    filename = normalized_path.rsplit('/', 1)[-1]
+    if filename.split('_', 1)[0] == user_id:
+        return True
+
+    client = get_admin_supabase()
+    legacy_public_url = client.storage.from_(
+        StorageDB.BUCKET_NAME
+    ).get_public_url(normalized_path)
+
+    for stored_value in (normalized_path, legacy_public_url):
+        response = client.table('symptoms_log').select('id').eq(
+            'user_id', user_id
+        ).contains('image_urls', [stored_value]).limit(1).execute()
+        if response.data:
+            return True
+
+    return False
 
 
 def get_mime_from_extension(filename):
@@ -207,13 +236,14 @@ def upload_image():
         content_type = file.mimetype or get_mime_from_extension(file.filename)
 
         # Upload to Supabase Storage
-        upload_url = StorageDB.upload_image(
+        file_path = StorageDB.upload_image(
             file_path=filename,
             file_data=processed_data,
             content_type=content_type
         )
 
-        if not upload_url:
+        signed_url = StorageDB.get_signed_url(file_path) if file_path else None
+        if not signed_url:
             return jsonify({
                 'success': False,
                 'message': 'Failed to upload image to storage'
@@ -223,7 +253,7 @@ def upload_image():
             'success': True,
             'message': 'Image uploaded successfully',
             'image': {
-                'url': upload_url,
+                'url': signed_url,
                 'filename': filename,
                 'image_type': image_type,
                 'size': file_size,
@@ -333,13 +363,14 @@ def upload_image_base64():
         )
 
         # Upload to storage
-        upload_url = StorageDB.upload_image(
+        file_path = StorageDB.upload_image(
             file_path=filename,
             file_data=processed_data,
             content_type=mime_type
         )
 
-        if not upload_url:
+        signed_url = StorageDB.get_signed_url(file_path) if file_path else None
+        if not signed_url:
             return jsonify({
                 'success': False,
                 'message': 'Failed to upload image'
@@ -349,7 +380,7 @@ def upload_image_base64():
             'success': True,
             'message': 'Image uploaded successfully',
             'image': {
-                'url': upload_url,
+                'url': signed_url,
                 'filename': filename,
                 'image_type': image_type,
                 'size': file_size,
@@ -493,13 +524,10 @@ def delete_image(filename):
                 'message': 'Filename is required'
             }), 400
 
-        # Verify user owns this image (basic check)
-        user_id = str(g.current_user_id)[:8]
-
-        if user_id not in filename and g.current_user_role != 'admin':
+        if not user_owns_image(filename):
             return jsonify({
                 'success': False,
-                'message': 'You can only delete your own images'
+                'message': 'Image not found or you do not have permission to delete it'
             }), 403
 
         # Delete from storage
@@ -571,6 +599,12 @@ def get_signed_url():
             expires_in = 3600
 
         # Generate signed URL
+        if not user_owns_image(filename):
+            return jsonify({
+                'success': False,
+                'message': 'Image not found or you do not have permission to access it'
+            }), 404
+
         signed_url = StorageDB.get_signed_url(filename, expires_in)
 
         if not signed_url:
@@ -830,17 +864,20 @@ def upload_batch():
                     image_type
                 )
 
-                url = StorageDB.upload_image(
+                file_path = StorageDB.upload_image(
                     file_path=filename,
                     file_data=processed,
                     content_type=mime_type
                 )
+                signed_url = (
+                    StorageDB.get_signed_url(file_path) if file_path else None
+                )
 
-                if url:
+                if signed_url:
                     results.append({
                         'index': index,
                         'success': True,
-                        'url': url,
+                        'url': signed_url,
                         'filename': filename,
                         'image_type': image_type
                     })

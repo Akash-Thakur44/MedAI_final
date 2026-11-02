@@ -9,6 +9,7 @@ helper functions for database operations.
 import os
 from supabase import create_client, Client
 from typing import Optional
+from urllib.parse import unquote, urlsplit
 
 
 # ============================================
@@ -621,7 +622,38 @@ class RecommendationDB:
 class StorageDB:
     """Database operations for Supabase Storage"""
 
-    BUCKET_NAME = 'medical-images'
+    BUCKET_NAME = os.getenv('SUPABASE_BUCKET', 'medical-images')
+
+
+    @staticmethod
+    def normalize_file_path(file_path: str) -> Optional[str]:
+        """Return a bucket-relative path from a path or Supabase object URL."""
+        if not isinstance(file_path, str) or not file_path.strip():
+            return None
+
+        parsed = urlsplit(file_path)
+        if parsed.scheme or parsed.netloc:
+            if parsed.scheme not in ('http', 'https') or not parsed.netloc:
+                return None
+
+            path_prefixes = (
+                f'/object/public/{StorageDB.BUCKET_NAME}/',
+                f'/object/sign/{StorageDB.BUCKET_NAME}/',
+            )
+            for prefix in path_prefixes:
+                if prefix in parsed.path:
+                    file_path = parsed.path.split(prefix, 1)[1]
+                    break
+            else:
+                return None
+
+        normalized_path = unquote(file_path).lstrip('/')
+        if not normalized_path or any(
+            segment in ('', '.', '..') for segment in normalized_path.split('/')
+        ):
+            return None
+
+        return normalized_path
 
 
     @staticmethod
@@ -635,7 +667,7 @@ class StorageDB:
             content_type: MIME type
 
         Returns:
-            str: Public URL of uploaded image or None
+            str: Bucket-relative path of uploaded image or None
         """
         try:
             client = get_admin_supabase()
@@ -649,9 +681,7 @@ class StorageDB:
                 }
             )
 
-            # Get public URL
-            url = client.storage.from_(StorageDB.BUCKET_NAME).get_public_url(file_path)
-            return url
+            return file_path
 
         except Exception as e:
             print(f"[ERROR] upload_image: {str(e)}")
@@ -662,6 +692,10 @@ class StorageDB:
     def delete_image(file_path: str):
         """Delete image from storage"""
         try:
+            file_path = StorageDB.normalize_file_path(file_path)
+            if not file_path:
+                return False
+
             client = get_admin_supabase()
             response = client.storage.from_(StorageDB.BUCKET_NAME).remove([file_path])
             return True
@@ -675,6 +709,10 @@ class StorageDB:
     def get_signed_url(file_path: str, expires_in: int = 3600):
         """Get signed URL for private image (expires after time)"""
         try:
+            file_path = StorageDB.normalize_file_path(file_path)
+            if not file_path:
+                return None
+
             client = get_admin_supabase()
             response = client.storage.from_(StorageDB.BUCKET_NAME).create_signed_url(
                 file_path,

@@ -100,10 +100,10 @@ def upload_images_to_storage(images, user_id):
         user_id: User ID for filename
 
     Returns:
-        tuple: (image_urls, image_types)
+        tuple: (image_paths, image_types)
     """
 
-    image_urls = []
+    image_paths = []
     image_types = []
 
     for img in images:
@@ -135,27 +135,38 @@ def upload_images_to_storage(images, user_id):
             # Generate filename
             timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
             unique_id = str(uuid.uuid4())[:8]
-            user_part = str(user_id)[:8]
+            user_part = str(user_id)
             extension = mime_type.split('/')[-1].replace('jpeg', 'jpg')
 
             filename = f"{image_type}/{user_part}_{timestamp}_{unique_id}.{extension}"
 
             # Upload to storage
-            url = StorageDB.upload_image(
+            file_path = StorageDB.upload_image(
                 file_path=filename,
                 file_data=processed_data,
                 content_type=mime_type
             )
 
-            if url:
-                image_urls.append(url)
+            if file_path:
+                image_paths.append(file_path)
                 image_types.append(image_type)
 
         except Exception as e:
             print(f"[IMAGE UPLOAD ERROR] {str(e)}")
             continue
 
-    return image_urls, image_types
+    return image_paths, image_types
+
+
+def create_signed_image_urls(image_paths):
+    """Create short-lived access URLs for stored image paths."""
+    signed_urls = []
+    for image_path in image_paths or []:
+        signed_url = StorageDB.get_signed_url(image_path)
+        if not signed_url:
+            raise RuntimeError('Failed to create a signed URL for a stored image')
+        signed_urls.append(signed_url)
+    return signed_urls
 
 
 def get_recommended_doctors(specialist_type, severity, limit=3):
@@ -280,11 +291,11 @@ def analyze_symptoms():
         # ============================================
         # STEP 1: Upload Images (if any)
         # ============================================
-        image_urls = []
+        image_paths = []
         image_types = []
 
         if images and len(images) > 0:
-            image_urls, image_types = upload_images_to_storage(images, user_id)
+            image_paths, image_types = upload_images_to_storage(images, user_id)
 
         # ============================================
         # STEP 2: Save Symptoms Log
@@ -303,8 +314,8 @@ def analyze_symptoms():
         if additional_notes:
             symptom_log_data['additional_notes'] = additional_notes
 
-        if image_urls:
-            symptom_log_data['image_urls'] = image_urls
+        if image_paths:
+            symptom_log_data['image_urls'] = image_paths
             symptom_log_data['image_types'] = image_types
 
         symptom_log = SymptomDB.create(symptom_log_data)
@@ -526,8 +537,8 @@ def analyze_symptoms():
             'analyzed_at': datetime.utcnow().isoformat()
         }
 
-        if image_urls:
-            response_data['image_urls'] = image_urls
+        if image_paths:
+            response_data['image_urls'] = create_signed_image_urls(image_paths)
             response_data['image_types'] = image_types
 
         return jsonify(response_data), 200
@@ -603,11 +614,14 @@ def get_history():
             if diagnosis_response.data and len(diagnosis_response.data) > 0:
                 diagnosis = diagnosis_response.data[0]
 
+            image_urls = create_signed_image_urls(
+                symptom.get('image_urls', [])
+            )
             history_item = {
                 'id': symptom['id'],
                 'symptoms_text': symptom.get('symptoms_text'),
                 'input_type': symptom.get('input_type'),
-                'image_urls': symptom.get('image_urls', []),
+                'image_urls': image_urls,
                 'image_types': symptom.get('image_types', []),
                 'age': symptom.get('age'),
                 'gender': symptom.get('gender'),
@@ -716,13 +730,14 @@ def get_history_detail(log_id):
                         recommended_doctors.append(doctor)
 
         # Build response
+        image_urls = create_signed_image_urls(symptom.get('image_urls', []))
         response_data = {
             'success': True,
             'data': {
                 'log_id': symptom['id'],
                 'symptoms_text': symptom.get('symptoms_text'),
                 'input_methods': [symptom.get('input_type')] if symptom.get('input_type') else [],
-                'image_urls': symptom.get('image_urls', []),
+                'image_urls': image_urls,
                 'image_types': symptom.get('image_types', []),
                 'patient': {
                     'age': symptom.get('age'),
@@ -734,7 +749,7 @@ def get_history_detail(log_id):
                 'images': [
                     {'preview': url, 'type': type_}
                     for url, type_ in zip(
-                        symptom.get('image_urls', []) or [],
+                        image_urls,
                         symptom.get('image_types', []) or []
                     )
                 ]
