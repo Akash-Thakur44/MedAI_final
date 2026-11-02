@@ -15,7 +15,7 @@ const CONFIG = {
       return "http://localhost:5000";
     }
 
-    return 'https://medaifinal-production.up.railway.app';
+    return 'https://medai-final.onrender.com';
   })(),
 
   /* ==================== APP INFO ==================== */
