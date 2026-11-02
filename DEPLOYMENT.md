@@ -37,6 +37,8 @@ values in Render's environment settings:
 | `SUPABASE_KEY` | Supabase legacy anon key |
 | `SUPABASE_SERVICE_KEY` | Supabase legacy service-role key |
 | `GEMINI_API_KEY` | Gemini API key |
+| `GEMINI_MODEL_TEXT` | `gemini-3.8-flash` |
+| `GEMINI_MODEL_VISION` | `gemini-3.8-flash` |
 | `FRONTEND_URL` | Production Vercel site URL, including `https://` |
 
 Render provides `PORT`. `ALLOWED_ORIGINS` is optional and is only needed for

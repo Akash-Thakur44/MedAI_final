@@ -61,8 +61,8 @@ class Config:
     # GEMINI AI API
     # ============================================
     GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
-    GEMINI_MODEL_TEXT = os.getenv('GEMINI_MODEL_TEXT', 'gemini-2.5-flash')
-    GEMINI_MODEL_VISION = os.getenv('GEMINI_MODEL_VISION', 'gemini-2.5-flash')
+    GEMINI_MODEL_TEXT = os.getenv('GEMINI_MODEL_TEXT', 'gemini-3.8-flash')
+    GEMINI_MODEL_VISION = os.getenv('GEMINI_MODEL_VISION', 'gemini-3.8-flash')
     GEMINI_TEMPERATURE = float(os.getenv('GEMINI_TEMPERATURE', '0.7'))
     GEMINI_MAX_TOKENS = int(os.getenv('GEMINI_MAX_TOKENS', '2048'))
     GEMINI_TIMEOUT = int(os.getenv('GEMINI_TIMEOUT', '60'))

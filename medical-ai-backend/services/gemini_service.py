@@ -24,8 +24,8 @@ class GeminiService:
     # ============================================
     # CONFIGURATION
     # ============================================
-    MODEL_TEXT = 'gemini-2.5-flash'
-    MODEL_VISION = 'gemini-2.5-flash'
+    MODEL_TEXT = os.getenv('GEMINI_MODEL_TEXT', 'gemini-3.8-flash')
+    MODEL_VISION = os.getenv('GEMINI_MODEL_VISION', 'gemini-3.8-flash')
 
     DEFAULT_TEMPERATURE = 0.7
     DEFAULT_MAX_TOKENS = 8192

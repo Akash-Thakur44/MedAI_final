@@ -109,7 +109,9 @@ class VoiceService:
             with open(audio_path, 'rb') as f:
                 audio_bytes = f.read()
 
-            model = genai.GenerativeModel("gemini-2.5-flash")
+            model = genai.GenerativeModel(
+                os.getenv('GEMINI_MODEL_TEXT', 'gemini-3.8-flash')
+            )
             response = model.generate_content([
                 {
                     "mime_type": mime_type,
