@@ -27,6 +27,8 @@ services:
         value: gemini-3.8-flash
       - key: GEMINI_MODEL_VISION
         value: gemini-3.8-flash
+      - key: GEMINI_TIMEOUT
+        value: "90"
       - key: FRONTEND_URL
         sync: false
       - key: SUPABASE_BUCKET

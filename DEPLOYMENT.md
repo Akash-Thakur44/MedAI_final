@@ -39,6 +39,7 @@ values in Render's environment settings:
 | `GEMINI_API_KEY` | Gemini API key |
 | `GEMINI_MODEL_TEXT` | `gemini-3.8-flash` |
 | `GEMINI_MODEL_VISION` | `gemini-3.8-flash` |
+| `GEMINI_TIMEOUT` | `90` seconds |
 | `FRONTEND_URL` | Production Vercel site URL, including `https://` |
 
 Render provides `PORT`. `ALLOWED_ORIGINS` is optional and is only needed for

@@ -65,7 +65,7 @@ class Config:
     GEMINI_MODEL_VISION = os.getenv('GEMINI_MODEL_VISION', 'gemini-3.8-flash')
     GEMINI_TEMPERATURE = float(os.getenv('GEMINI_TEMPERATURE', '0.7'))
     GEMINI_MAX_TOKENS = int(os.getenv('GEMINI_MAX_TOKENS', '2048'))
-    GEMINI_TIMEOUT = int(os.getenv('GEMINI_TIMEOUT', '60'))
+    GEMINI_TIMEOUT = int(os.getenv('GEMINI_TIMEOUT', '90'))
 
     # ============================================
     # JWT AUTHENTICATION

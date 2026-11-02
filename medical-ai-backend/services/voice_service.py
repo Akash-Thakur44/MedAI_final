@@ -112,13 +112,18 @@ class VoiceService:
             model = genai.GenerativeModel(
                 os.getenv('GEMINI_MODEL_TEXT', 'gemini-3.8-flash')
             )
-            response = model.generate_content([
-                {
-                    "mime_type": mime_type,
-                    "data": audio_bytes
-                },
-                "Transcribe this audio file exactly as spoken. Do not translate. Output ONLY the transcription text, nothing else. If the audio contains no speech or only noise, output an empty string."
-            ])
+            response = model.generate_content(
+                [
+                    {
+                        "mime_type": mime_type,
+                        "data": audio_bytes
+                    },
+                    "Transcribe this audio file exactly as spoken. Do not translate. Output ONLY the transcription text, nothing else. If the audio contains no speech or only noise, output an empty string."
+                ],
+                request_options={
+                    'timeout': int(os.getenv('GEMINI_TIMEOUT', '90'))
+                }
+            )
 
             text = response.text.strip() if response and response.text else ""
 

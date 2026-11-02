@@ -29,7 +29,7 @@ class GeminiService:
 
     DEFAULT_TEMPERATURE = 0.7
     DEFAULT_MAX_TOKENS = 8192
-    DEFAULT_TIMEOUT = 90
+    DEFAULT_TIMEOUT = int(os.getenv('GEMINI_TIMEOUT', '90'))
 
     CHAT_TEMPERATURE = 0.8
     CHAT_MAX_TOKENS = 4096
@@ -203,7 +203,10 @@ Match the user's writing style and tone."""
                 safety_settings=GeminiService.SAFETY_SETTINGS
             )
 
-            response = model.generate_content(prompt)
+            response = model.generate_content(
+                prompt,
+                request_options={'timeout': GeminiService.DEFAULT_TIMEOUT}
+            )
 
             if not response or not response.text:
                 return {
@@ -292,7 +295,10 @@ Match the user's writing style and tone."""
                 safety_settings=GeminiService.SAFETY_SETTINGS
             )
 
-            response = model.generate_content([prompt, image])
+            response = model.generate_content(
+                [prompt, image],
+                request_options={'timeout': GeminiService.DEFAULT_TIMEOUT}
+            )
 
             if not response or not response.text:
                 return {
@@ -414,7 +420,10 @@ Match the user's writing style and tone."""
             )
 
             content = [prompt] + pil_images
-            response = model.generate_content(content)
+            response = model.generate_content(
+                content,
+                request_options={'timeout': GeminiService.DEFAULT_TIMEOUT}
+            )
 
             if not response or not response.text:
                 return {
@@ -481,7 +490,10 @@ Match the user's writing style and tone."""
                 safety_settings=GeminiService.SAFETY_SETTINGS
             )
 
-            response = model.generate_content(enhanced_prompt)
+            response = model.generate_content(
+                enhanced_prompt,
+                request_options={'timeout': GeminiService.DEFAULT_TIMEOUT}
+            )
 
             if not response or not response.text:
                 return {
@@ -1233,7 +1245,10 @@ Provide ONLY JSON without markdown."""
         try:
             GeminiService.initialize()
             model = genai.GenerativeModel(GeminiService.MODEL_TEXT)
-            response = model.generate_content("Say 'OK' if you can read this.")
+            response = model.generate_content(
+                "Say 'OK' if you can read this.",
+                request_options={'timeout': GeminiService.DEFAULT_TIMEOUT}
+            )
 
             if response and response.text:
                 return {
